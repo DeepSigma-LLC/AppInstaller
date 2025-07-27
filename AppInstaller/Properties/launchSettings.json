@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AppInstaller (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AppInstaller (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
