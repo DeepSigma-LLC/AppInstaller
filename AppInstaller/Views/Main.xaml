@@ -15,8 +15,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="textbox_log" Grid.Row="0" TextWrapping="Wrap" IsSpellCheckEnabled="False" IsReadOnly="True" IsEnabled="False"></TextBox>
+        <RichEditBox x:Name="textbox_log" Grid.Row="0" TextWrapping="Wrap" IsSpellCheckEnabled="False" IsEnabled="False"/>
         <TextBlock Grid.Row="1"/>
-        <ProgressBar Grid.Row="2" IsIndeterminate="True" ShowPaused="False" ShowError="False" Padding="0, 0, 0,20" HorizontalAlignment="Stretch"/>
+        <ProgressBar x:Name="progressBar" Grid.Row="2" IsIndeterminate="True" ShowPaused="False" ShowError="False" Padding="0, 0, 0,20" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>
