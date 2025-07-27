@@ -36,7 +36,7 @@ namespace AppInstaller
 
         private void NavigateToStartPage()
         {
-            if(AppConfigSerivce.GetAppConfig().UserSelectsInstallLocation == true)
+            if(AppConfigSerivce.GetAppConfig().IsInstallLocationNeeded() == true)
             {
                 contentFrame.Navigate(typeof(Views.InstallPromptUser));
                 return;

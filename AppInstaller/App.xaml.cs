@@ -43,6 +43,8 @@ namespace AppInstaller
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            var currentAppInstallPath = args.Arguments[0];
+
             _window = new MainWindow();
             _window.Activate();
         }
