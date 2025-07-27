@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using AppInstaller.Classes;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -11,6 +7,12 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
+using Microsoft.Windows.AppLifecycle;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -43,10 +45,24 @@ namespace AppInstaller
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            var currentAppInstallPath = args.Arguments[0];
-
-            _window = new MainWindow();
+                        _window = new MainWindow();
             _window.Activate();
+            StoreInstalledAppPathPassedAsArgument(args);
+        }
+
+
+
+        private void StoreInstalledAppPathPassedAsArgument(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        {
+
+            string[] commandArgs = Environment.GetCommandLineArgs();
+
+            if (commandArgs.Length > 1) // args[0] is the executable path
+            {
+                string passedArg = commandArgs[1];
+                // Do something with it
+                throw new Exception($"Argument passed: {passedArg}");
+            }
         }
     }
 }

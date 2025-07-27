@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppInstaller.Classes
 {
-    internal static class AppVersioning
+    internal static class AppVersioningService
     {
         
         /// <summary>
