@@ -38,37 +38,66 @@ namespace AppInstaller.Views
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
         {
-            await UpdateLogAsync();
+            await UpdateTextAsync();
         }
 
-        private async Task UpdateLogAsync()
+        private async Task UpdateTextAsync()
         {
             Color color_white = Color.White;
             Color color_green = Color.LightGreen;
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Starting Application Installation... ", color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_white);
             await Task.Delay(1000);
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Analyzing file structure... ", color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Analyzing file structure... ", color_white);
             await Task.Delay(4000);
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Deleting old files.. ", color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Deleting old files.. ", color_white);
             await Task.Delay(3000);
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Transfering new files... ", color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Transfering new files... ", color_white);
             await Task.Delay(3000);
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "\n", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", color_green);
 
-            RichEditBoxLogging.AppendColoredText(textbox_log, "Done! ", color_green);
-            RichEditBoxLogging.AppendColoredText(textbox_log, "This application will close in 5 seconds and relaunch your target application.", color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Done! ", color_green);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "This application will close in 5 seconds and relaunch your target application.", color_white);
 
             progressBar.Visibility = Visibility.Collapsed;
         }
+
+        //private async Task UpdateLogAsync()
+        //{
+        //    Color color_white = Color.White;
+        //    Color color_green = Color.LightGreen;
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Starting Application Installation... ", color_white);
+        //    await Task.Delay(1000);
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Analyzing file structure... ", color_white);
+        //    await Task.Delay(4000);
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Deleting old files.. ", color_white);
+        //    await Task.Delay(3000);
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Transfering new files... ", color_white);
+        //    await Task.Delay(3000);
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "\n", color_green);
+
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Done! ", color_green);
+        //    RichEditBoxLogging.AppendColoredText(textbox_log, "This application will close in 5 seconds and relaunch your target application.", color_white);
+
+        //    progressBar.Visibility = Visibility.Collapsed;
+        //}
 
     }
 }

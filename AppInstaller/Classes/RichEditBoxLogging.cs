@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,31 @@ namespace AppInstaller.Classes
             // Apply color format to just-inserted text
             doc.Selection.CharacterFormat.ForegroundColor = ConvertColor(color);
         }
+
+        internal static void AppendColoredText(RichTextBlock block, string text, System.Drawing.Color color)
+        {
+            var run = new Run
+            {
+                Text = text,
+                Foreground = new SolidColorBrush(ConvertColor(color))
+            };
+
+            Paragraph paragraph;
+
+            // Reuse the last paragraph if available
+            if (block.Blocks.LastOrDefault() is Paragraph lastParagraph)
+            {
+                paragraph = lastParagraph;
+            }
+            else
+            {
+                paragraph = new Paragraph();
+                block.Blocks.Add(paragraph);
+            }
+
+            paragraph.Inlines.Add(run);
+        }
+
 
         private static Windows.UI.Color ConvertColor(System.Drawing.Color color)
         {
