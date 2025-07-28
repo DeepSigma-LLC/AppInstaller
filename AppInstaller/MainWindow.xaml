@@ -13,7 +13,7 @@
         <MicaBackdrop/>
     </Window.SystemBackdrop>
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -26,7 +26,7 @@
             <TextBlock Grid.Row="0"  Text="App Installer" FontSize="26" HorizontalAlignment="Center" Padding="20, 10, 0, 10"/>
             <ProgressBar Grid.Row="1" Padding="0, 0, 0, 10"/>
             <Frame Grid.Row="2" x:Name="contentFrame"/>
-            <TextBlock Grid.Row="3" Text="Version: Unknown" FontSize="10" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0, 0,0,0"/>
+            <TextBlock Grid.Row="3" Text="{Binding VersionText}" FontSize="10" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0, 0,0,0"/>
             <TextBlock Grid.Row="4" Text="DeepSigma LLC" FontSize="7" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0, 0,0,10"/>
         </Grid>
     </Grid>

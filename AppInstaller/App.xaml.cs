@@ -28,7 +28,7 @@ namespace AppInstaller
     /// </summary>
     public partial class App : Application
     {
-        private Window? _window;
+        public static MainWindow? MyWindow { get; private set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -45,8 +45,8 @@ namespace AppInstaller
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-                        _window = new MainWindow();
-            _window.Activate();
+            MyWindow = new MainWindow();
+            MyWindow.Activate();
             StoreInstalledAppPathPassedAsArgument(args);
         }
 

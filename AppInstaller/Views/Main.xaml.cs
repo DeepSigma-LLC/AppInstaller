@@ -17,8 +17,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using System.Drawing;
 using System.Threading.Tasks;
-using Windows.UI;
 using System.Threading;
+using AppInstaller.Classes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,7 +33,7 @@ namespace AppInstaller.Views
         public Main()
         {
             InitializeComponent();
-            this.Loaded += Main_Loaded;
+            this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
         }
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
@@ -43,59 +43,32 @@ namespace AppInstaller.Views
 
         private async Task UpdateLogAsync()
         {
-            AppendColoredText(textbox_log, "Starting Application Installation... ", System.Drawing.Color.White);
+            Color color_white = Color.White;
+            Color color_green = Color.LightGreen;
+
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Starting Application Installation... ", color_white);
             await Task.Delay(1000);
-            AppendColoredText(textbox_log, "Successful!\n", System.Drawing.Color.Green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
 
-            AppendColoredText(textbox_log, "Analyzing file structure... ", System.Drawing.Color.White);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Analyzing file structure... ", color_white);
             await Task.Delay(4000);
-            AppendColoredText(textbox_log, "Successful!\n", System.Drawing.Color.Green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
 
-            AppendColoredText(textbox_log, "Deleting old files.. ", System.Drawing.Color.White);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Deleting old files.. ", color_white);
             await Task.Delay(3000);
-            AppendColoredText(textbox_log, "Successful!\n", System.Drawing.Color.Green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
 
-            AppendColoredText(textbox_log, "Transfering new files... ", System.Drawing.Color.White);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Transfering new files... ", color_white);
             await Task.Delay(3000);
-            AppendColoredText(textbox_log, "Successful!\n", System.Drawing.Color.Green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
 
-            AppendColoredText(textbox_log, "\n", System.Drawing.Color.Green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "\n", color_green);
 
-            AppendColoredText(textbox_log, "Done! ", System.Drawing.Color.Green);
-            AppendColoredText(textbox_log, "This application will close in 5 seconds and relaunch your target application.", System.Drawing.Color.White);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "Done! ", color_green);
+            RichEditBoxLogging.AppendColoredText(textbox_log, "This application will close in 5 seconds and relaunch your target application.", color_white);
 
             progressBar.Visibility = Visibility.Collapsed;
-            
         }
-
-     
-        private void AppendColoredText(RichEditBox box, string text, System.Drawing.Color color)
-        {
-            // Move selection to the end
-            box.Document.GetText(Microsoft.UI.Text.TextGetOptions.None, out string existingText);
-            int length = existingText.Length;
-
-            // Set selection at end of document
-            var doc = box.Document;
-            doc.Selection.SetRange(length, length);
-
-            // Insert text
-            doc.Selection.Text = text;
-
-            // Apply color format to just-inserted text
-            doc.Selection.CharacterFormat.ForegroundColor = ConvertColor(color);
-        }
-
-        private Windows.UI.Color ConvertColor(System.Drawing.Color color)
-        {
-            Windows.UI.Color winUIColor = Windows.UI.Color.FromArgb(
-                color.A,
-                color.R,
-                color.G,
-                color.B);
-            return winUIColor;
-        }
-
 
     }
 }

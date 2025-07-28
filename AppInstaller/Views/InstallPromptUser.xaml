@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" PlaceholderText="Selected Install Location:" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="selectedFilePath" Grid.Column="0" PlaceholderText="Selected Install Location:" HorizontalAlignment="Stretch"/>
             <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
             <Button Grid.Column="2" Content="Select Location" Click="Select_Folder_Click"/>
         </Grid>
