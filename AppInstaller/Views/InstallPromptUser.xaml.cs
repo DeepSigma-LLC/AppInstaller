@@ -12,7 +12,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Storage.Pickers;
+using AppInstaller.Classes.UI;
+using AppInstaller.Classes.UI.ControlUtilities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,12 +25,46 @@ namespace AppInstaller.Views
     /// </summary>
     public sealed partial class InstallPromptUser : Page
     {
+
+        private FolderSelector fileSelector {  get; set; }
+        private string? selectedInstallLocation { get; set; }
         public InstallPromptUser()
         {
             InitializeComponent();
+            fileSelector = new FolderSelector();
         }
 
-        private void Install_Button_Click(object sender, RoutedEventArgs e)
+
+        private async void Install_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsInstallPathValid())
+            {
+                await MessageBox.ShowDialogAsync((FrameworkElement)sender,
+                contentMessage: "Your install is about to begin. \n\nAre you sure you want to continue?",
+                primaryButtonText: "Yes",
+                successMethod: Install,
+                closeButtonText: "Cancel");
+                return;
+            }
+            await MessageBox.ShowDialogAsync((FrameworkElement)sender,
+                contentMessage: "Invalid install path. \n\nPlease select a valid and empty installation path.",
+                primaryButtonText: "Ok");
+        }
+
+        private bool IsInstallPathValid()
+        {
+            string selectedPath = selectedFilePath.Text;
+            bool isPathValid = Directory.Exists(selectedPath);
+
+            bool isPathEmpty = false;
+            if (isPathValid)
+            {
+                isPathEmpty = Directory.EnumerateFileSystemEntries(selectedPath).Count() == 0;
+            }
+            return isPathValid && isPathEmpty;
+        }
+
+        private void Install()
         {
             this.Frame.Navigate(typeof(Main));
         }
@@ -37,37 +72,16 @@ namespace AppInstaller.Views
         private async void Select_Folder_Click(object sender, RoutedEventArgs e)
         {
             selectedFilePath.Text = String.Empty;
-
-            var senderButton = sender as Button;
-            if (senderButton is null) return;
-            senderButton.IsEnabled = false;
-
-            var openPicker = new Windows.Storage.Pickers.FolderPicker();
-            var window = App.MyWindow;
-
-            // Retrieve the window handle (HWND) of the current WinUI 3 window.
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-
-            // Initialize the file picker with the window handle (HWND).
-            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-
-            // Set options for your file picker
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.FileTypeFilter.Add("*");
-
-            // Open the picker for the user to pick a file
-            var folder = await openPicker.PickSingleFolderAsync();
-            if (folder != null)
+            if(App.MyWindow is not null)
             {
-                selectedFilePath.Text = folder.Path;
+                selectedInstallLocation = await fileSelector.SelectFolderAsync(App.MyWindow, (Button)sender);
+                selectedFilePath.Text = selectedInstallLocation ?? String.Empty;
             }
-
-            senderButton.IsEnabled = true;
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Environment.Exit(1);
+            AppUtilities.ExitApp();
         }
     }
 }

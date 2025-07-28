@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppInstaller.Classes
+namespace AppInstaller.Classes.UI.ControlUtilities
 {
     internal static class RichEditBoxLogging
     {

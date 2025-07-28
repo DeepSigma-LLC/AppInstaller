@@ -18,7 +18,7 @@ using Windows.Foundation.Collections;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Threading;
-using AppInstaller.Classes;
+using AppInstaller.Classes.UI.ControlUtilities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -70,34 +70,6 @@ namespace AppInstaller.Views
             progressBar.Visibility = Visibility.Collapsed;
         }
 
-        //private async Task UpdateLogAsync()
-        //{
-        //    Color color_white = Color.White;
-        //    Color color_green = Color.LightGreen;
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Starting Application Installation... ", color_white);
-        //    await Task.Delay(1000);
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Analyzing file structure... ", color_white);
-        //    await Task.Delay(4000);
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Deleting old files.. ", color_white);
-        //    await Task.Delay(3000);
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Transfering new files... ", color_white);
-        //    await Task.Delay(3000);
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Successful!\n", color_green);
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "\n", color_green);
-
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "Done! ", color_green);
-        //    RichEditBoxLogging.AppendColoredText(textbox_log, "This application will close in 5 seconds and relaunch your target application.", color_white);
-
-        //    progressBar.Visibility = Visibility.Collapsed;
-        //}
-
+     
     }
 }
