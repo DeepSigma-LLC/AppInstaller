@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Threading;
 using AppInstaller.Classes.UI.ControlUtilities;
+using AppInstaller.Classes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,10 +31,20 @@ namespace AppInstaller.Views
     /// </summary>
     public sealed partial class Main : Page
     {
+        private Installer installer {  get; set; }
         public Main()
         {
             InitializeComponent();
+            installer = new Installer(new AppConfig());
+
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
+            installer.Progress_Log += UpdateProgress;
+        }
+
+        private void UpdateProgress(object? sender, string msg)
+        {
+            Color color_white = Color.White;
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, msg, color_white);
         }
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
@@ -45,6 +56,11 @@ namespace AppInstaller.Views
         {
             Color color_white = Color.White;
             Color color_green = Color.LightGreen;
+
+            if(true == false)
+            {
+                await Task.Run(() => installer.Run());
+            }
 
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_white);
             await Task.Delay(1000);

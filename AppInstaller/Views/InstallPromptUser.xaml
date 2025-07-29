@@ -13,13 +13,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Please select the location to install the application." Padding="0, 0, 0, 10"/>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Application Name:" Padding="0, 0, 0, 10"/>
+            <TextBox PlaceholderText="Application Name" IsEnabled="False"/>
+            <TextBlock Text="Source Location:" Padding="0, 15, 0, 10"/>
+            <TextBox PlaceholderText="Source Directory Location" IsEnabled="False"/>
+            <TextBlock Text="Target Install Location:" Padding="0, 15, 0, 10"/>
+        </StackPanel>
         
-        <Grid Grid.Row="1" >
+         <Grid Grid.Row="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
@@ -29,12 +33,12 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="selectedFilePath" Grid.Column="0" PlaceholderText="Selected Install Location:" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="selectedFilePath" Grid.Column="0" PlaceholderText="Selected Install Location" HorizontalAlignment="Stretch"/>
             <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
             <Button Grid.Column="2" Content="Select Location" Click="Select_Folder_Click"/>
         </Grid>
         
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Padding="0, 20, 0, 0"  Spacing="10" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Padding="0, 20, 0, 0"  Spacing="10" HorizontalAlignment="Center">
             <Button Content="Install" Style="{StaticResource AccentButtonStyle}" Click="Install_Button_Click"/>
             <Button Content="Cancel" Click="Cancel_Button_Click"/>
         </StackPanel>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 
 namespace AppInstaller.Classes.UI.ControlUtilities
@@ -17,22 +18,19 @@ namespace AppInstaller.Classes.UI.ControlUtilities
 
             sender.IsEnabled = false; // since async
             var openPicker = new Windows.Storage.Pickers.FolderPicker();
-
-            // Retrieve the window handle (HWND) of the current WinUI 3 window.
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-
-            // Initialize the file picker with the window handle (HWND).
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
 
             // Set options for your file picker
             openPicker.ViewMode = PickerViewMode.Thumbnail;
+
             foreach (var filter in filters)
             {
                 openPicker.FileTypeFilter.Add(filter);
             }
 
             // Open the picker for the user to pick a file
-            var folder = await openPicker.PickSingleFolderAsync();
+            StorageFolder folder = await openPicker.PickSingleFolderAsync();
             string? result = null;
             if (folder != null)
             {

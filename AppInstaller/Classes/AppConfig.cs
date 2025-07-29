@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace AppInstaller.Classes
 {
-    internal class AppConfig
+    public class AppConfig
     {
-        internal string TargetInstallLocation { get; set; } = String.Empty;
-        internal string AppNameToInstall { get; set; } = String.Empty;
-        internal string? NetworkDeploymentFolderPath { get; set; } = null;
-
-        internal bool IsInstallLocationNeeded()
+        public string SourceDirectoryPath { get; set; }
+        public string IgnoreFileName { get; set; } = "AppIgnore.txt";
+        public string? NetworkDeploymentFolderPath { get; set; } = null;
+        public string TargetInstallLocation { get; set; } = String.Empty;
+        public string AppNameToInstall { get; set; } = String.Empty;
+        public bool OverwriteConfigFile { get; set; } = false;
+        public bool IsInstallLocationNeeded()
         {
             if(TargetInstallLocation is null || TargetInstallLocation == String.Empty)
             {
@@ -24,18 +26,29 @@ namespace AppInstaller.Classes
             return false;
         }
 
-        internal bool InstallFromNetworkFolder()
+        public bool InstallFromNetworkFolder()
         {
-            if(NetworkDeploymentFolderPath is not null || Directory.Exists(NetworkDeploymentFolderPath))
+            if(String.IsNullOrEmpty(NetworkDeploymentFolderPath) == false || Directory.Exists(NetworkDeploymentFolderPath))
             {
                 return true;
             }
             return false;
         }
 
-        internal string GetCurrentLocationOfTheAppInstallerApp()
+        public string GetCurrentLocationOfTheAppInstallerApp()
         {
             return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        public List<string> GetIgnoreFilters()
+        {
+            string selectedPath = Assembly.GetExecutingAssembly().Location;
+            if (InstallFromNetworkFolder())
+            {
+                selectedPath = NetworkDeploymentFolderPath ?? selectedPath;
+            }
+            IgnoreFileController controller = new IgnoreFileController(selectedPath, IgnoreFileName);
+            return controller.GetIgnoreFilters();
         }
     }
 }
