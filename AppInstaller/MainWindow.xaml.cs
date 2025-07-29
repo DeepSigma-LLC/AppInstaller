@@ -55,12 +55,22 @@ namespace AppInstaller
 
         private void NavigateToStartPage()
         {
-            if(AppConfigSerivce.GetAppConfig().IsInstallLocationNeeded() == true)
+            if(IsAppInstallerInstalled() == false)
+            {
+                contentFrame.Navigate(typeof(Views.FirstTimeLaunchPage));
+                return;
+            }
+            else if(AppConfigSerivce.GetAppConfig().IsInstallLocationNeeded() == true)
             {
                 contentFrame.Navigate(typeof(Views.InstallPromptUser));
                 return;
             }
-            contentFrame.Navigate(typeof(Views.Main));
+            contentFrame.Navigate(typeof(Views.InstallPage));
+        }
+
+        private bool IsAppInstallerInstalled()
+        {
+            return false;
         }
 
         private void SetFixedWindowSize()

@@ -15,8 +15,8 @@
 	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Views\FirstTimeLaunchPage.xaml" />
     <None Remove="Views\InstallPromptUser.xaml" />
-    <None Remove="Views\Main.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,12 +46,17 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\FirstTimeLaunchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\InstallPromptUser.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\Main.xaml">
+    <Page Update="Views\InstallPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

@@ -29,10 +29,10 @@ namespace AppInstaller.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Main : Page
+    public sealed partial class InstallPage : Page
     {
         private Installer installer {  get; set; }
-        public Main()
+        public InstallPage()
         {
             InitializeComponent();
             installer = new Installer(new AppConfig());
@@ -45,6 +45,7 @@ namespace AppInstaller.Views
         {
             Color color_white = Color.White;
             RichEditBoxLogging.AppendColoredText(RichTextBlock, msg, color_white);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", color_white);
         }
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
@@ -57,9 +58,9 @@ namespace AppInstaller.Views
             Color color_white = Color.White;
             Color color_green = Color.LightGreen;
 
-            if(true == false)
+            if(true)
             {
-                await Task.Run(() => installer.Run());
+                installer.Run();
             }
 
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_white);

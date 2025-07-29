@@ -66,7 +66,7 @@ namespace AppInstaller.Views
 
         private void Install()
         {
-            this.Frame.Navigate(typeof(Main));
+            this.Frame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Click(object sender, RoutedEventArgs e)
