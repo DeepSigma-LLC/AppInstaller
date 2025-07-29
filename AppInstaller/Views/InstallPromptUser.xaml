@@ -18,6 +18,8 @@
         <StackPanel Grid.Row="0">
             <TextBlock Text="Application Name:" Padding="0, 0, 0, 10"/>
             <TextBox PlaceholderText="Application Name" IsEnabled="False"/>
+            <TextBlock Text="Git Repo:" Padding="0, 15, 0, 10"/>
+            <TextBox PlaceholderText="Git Repo HTTPs URL" IsEnabled="True"/>
             <TextBlock Text="Source Location:" Padding="0, 15, 0, 10"/>
             <TextBox PlaceholderText="Source Directory Location" IsEnabled="False"/>
             <TextBlock Text="Target Install Location:" Padding="0, 15, 0, 10"/>

@@ -17,7 +17,7 @@
             <TextBlock/>
             <CheckBox Content="Add Path Variable" IsChecked="True" IsEnabled="False"/>
             <TextBlock/>
-            <Button Content="Install" HorizontalAlignment="Center"  Style="{StaticResource AccentButtonStyle}"/>
+            <Button Content="Install" HorizontalAlignment="Center"  Style="{StaticResource AccentButtonStyle}" Click="Install_Button_Click"/>
             <TextBlock/>
             <Button Content="Already Installed?" HorizontalAlignment="Center"/>
         </StackPanel>

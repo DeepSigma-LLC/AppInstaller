@@ -79,7 +79,7 @@ namespace AppInstaller
             WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
             AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
             appWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
-            appWindow.Resize(new Windows.Graphics.SizeInt32(1700, 1100)); // Width, Height
+            appWindow.Resize(new Windows.Graphics.SizeInt32(1700, 1300)); // Width, Height
         }
     }
 }

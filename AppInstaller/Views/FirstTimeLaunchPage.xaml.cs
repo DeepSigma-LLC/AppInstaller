@@ -27,5 +27,10 @@ namespace AppInstaller.Views
         {
             InitializeComponent();
         }
+
+        private void Install_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(InstallPromptUser));
+        }
     }
 }

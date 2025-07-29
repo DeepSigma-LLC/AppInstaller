@@ -11,11 +11,12 @@ namespace AppInstaller.Classes
 {
     public class AppConfig
     {
-        public string SourceDirectoryPath { get; set; }
-        public string IgnoreFileName { get; set; } = "AppIgnore.txt";
-        public string? NetworkDeploymentFolderPath { get; set; } = null;
-        public string TargetInstallLocation { get; set; } = String.Empty;
         public string AppNameToInstall { get; set; } = String.Empty;
+        public string IgnoreFileName { get; set; } = "AppIgnore.txt";
+        public string SourceDirectoryPath { get; set; } = String.Empty;
+        public bool DoesSourceDirectoryContainVersioningDirectories { get; set; } = false;
+        public string TargetInstallLocation { get; set; } = String.Empty;
+        public string? NetworkDeploymentFolderPath { get; set; } = null;
         public bool OverwriteConfigFile { get; set; } = false;
         public bool IsInstallLocationNeeded()
         {
