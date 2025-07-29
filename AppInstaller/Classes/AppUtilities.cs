@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppInstaller.Classes.UI
+namespace AppInstaller.Classes
 {
     internal static class AppUtilities
     {
         internal static void ExitApp()
         {
-            System.Environment.Exit(1);
+            Environment.Exit(1);
         }
     }
 }

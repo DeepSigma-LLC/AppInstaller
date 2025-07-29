@@ -15,7 +15,7 @@ namespace AppInstaller.Classes.UI.ControlUtilities
         public event EventHandler<string>? ErrorMessagingEvent;
         public async Task<string?> SelectFileAsync(MainWindow window, Button sender, ICollection<string>? filters = null)
         {
-            if (filters is null) filters = []; //Initialize to empty list if not set
+            if (filters is null) filters = ["*"]; //Initialize to empty list if not set
 
             sender.IsEnabled = false; //Since async
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();

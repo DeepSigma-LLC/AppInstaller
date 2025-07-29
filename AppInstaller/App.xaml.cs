@@ -28,6 +28,7 @@ namespace AppInstaller
     /// </summary>
     public partial class App : Application
     {
+        public  static AppConfig AppConfig { get; set; }
         public static MainWindow? MyWindow { get; private set; }
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace AppInstaller
         public App()
         {
             InitializeComponent();
+            AppConfig = new AppConfig();
         }
 
         /// <summary>

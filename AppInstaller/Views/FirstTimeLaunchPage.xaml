@@ -8,18 +8,38 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel Padding="10, 0, 10 , 0">
+    <Grid Padding="10, 0, 10 , 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
             <TextBlock Text="Welcome!" HorizontalAlignment="Center" FontSize="28" Padding="0, 0, 0 ,10"/>
-            <TextBlock Text="Please proceed with the installation of the App Installer." HorizontalAlignment="Center"/>
+            <TextBlock Text="Please proceed with the installation of the App Installer." HorizontalAlignment="Center" Padding="0, 0, 0, 20"/>
+        </StackPanel>
+
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="SelectedInstallLocation" Grid.Column="0" PlaceholderText="Selected Install Location"  Text="{Binding recommended_install_path}"/>
+            <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
+            <Button Grid.Column="2" Content="Select Location" Click="Select_Folder_Location_Button_Click"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2">
             <TextBlock/>
-            <TextBox  PlaceholderText="Selected Install Location" />
+            <CheckBox x:Name="AddPathVariable" Content="Add Path Variable" IsChecked="False"/>
             <TextBlock/>
-            <CheckBox Content="Add Path Variable" IsChecked="True" IsEnabled="False"/>
-            <TextBlock/>
-            <Button Content="Install" HorizontalAlignment="Center"  Style="{StaticResource AccentButtonStyle}" Click="Install_Button_Click"/>
-            <TextBlock/>
-            <Button Content="Already Installed?" HorizontalAlignment="Center"/>
+            <Button Content="Install" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Click="Install_Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

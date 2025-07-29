@@ -11,25 +11,13 @@ namespace AppInstaller.Classes
 {
     public class AppConfig
     {
-        public string AppNameToInstall { get; set; } = String.Empty;
+        public string AppExeFile { get; set; } = String.Empty;
         public string IgnoreFileName { get; set; } = "AppIgnore.txt";
-        public string SourceDirectoryPath { get; set; } = String.Empty;
-        public bool DoesSourceDirectoryContainVersioningDirectories { get; set; } = false;
+        public string SourceDirectoryPath { private get; set; } = String.Empty;
         public string TargetInstallLocation { get; set; } = String.Empty;
-        public string? NetworkDeploymentFolderPath { get; set; } = null;
-        public bool OverwriteConfigFile { get; set; } = false;
         public bool IsInstallLocationNeeded()
         {
             if(TargetInstallLocation is null || TargetInstallLocation == String.Empty)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool InstallFromNetworkFolder()
-        {
-            if(String.IsNullOrEmpty(NetworkDeploymentFolderPath) == false || Directory.Exists(NetworkDeploymentFolderPath))
             {
                 return true;
             }
@@ -41,15 +29,43 @@ namespace AppInstaller.Classes
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
+        public bool DoesSourceDirectoryContainVersioningDirectories()
+        {
+            string app_file_path = Path.Combine(SourceDirectoryPath, AppExeFile);
+            string? max_version = TryGetLatestVersionDirectory();
+            if(String.IsNullOrEmpty(max_version) == false)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public string GetSourceDirectory()
+        {
+            string source_directory = SourceDirectoryPath;
+            string? LatestVersionDirectory = TryGetLatestVersionDirectory();
+            if (DoesSourceDirectoryContainVersioningDirectories() == true && LatestVersionDirectory is not null)
+            {
+                source_directory = Path.Combine(source_directory, LatestVersionDirectory);
+            }
+            return source_directory;
+        }
+
+       
         public List<string> GetIgnoreFilters()
         {
-            string selectedPath = Assembly.GetExecutingAssembly().Location;
-            if (InstallFromNetworkFolder())
-            {
-                selectedPath = NetworkDeploymentFolderPath ?? selectedPath;
-            }
+            string selectedPath = TargetInstallLocation ?? GetCurrentLocationOfTheAppInstallerApp();
             IgnoreFileController controller = new IgnoreFileController(selectedPath, IgnoreFileName);
             return controller.GetIgnoreFilters();
+        }
+
+        public string GetAppNameToInstall()
+        {
+            return this.AppExeFile.Replace(".exe", "");
+        }
+        private string? TryGetLatestVersionDirectory()
+        {
+            return AppVersioningService.GetLatestVersionFolder(SourceDirectoryPath);
         }
     }
 }

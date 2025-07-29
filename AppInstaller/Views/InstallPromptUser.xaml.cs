@@ -12,8 +12,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using AppInstaller.Classes.UI;
 using AppInstaller.Classes.UI.ControlUtilities;
+using AppInstaller.Classes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,8 +32,13 @@ namespace AppInstaller.Views
         {
             InitializeComponent();
             fileSelector = new FolderSelector();
+            SetGitVersion();
         }
 
+        private void Git_Repo_Download_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         private async void Install_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -82,6 +87,12 @@ namespace AppInstaller.Views
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
             AppUtilities.ExitApp();
+        }
+
+        private async void SetGitVersion()
+        {
+            string? result = await WindowsProcess.ProgramInstalledVersion("git");
+            textbox_Installed_Git_Version.Text = result ?? "Not Installed";
         }
     }
 }

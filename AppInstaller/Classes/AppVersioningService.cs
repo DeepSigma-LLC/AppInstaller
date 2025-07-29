@@ -19,25 +19,27 @@ namespace AppInstaller.Classes
         {
             if (Path.Exists(ProductionDeploymentDirectory))
             {
-                List<AppVersion> versions = [];
-                string[] DirectoryNames = Directory.GetDirectories(ProductionDeploymentDirectory);
-                foreach (string DirectoryName in DirectoryNames)
-                {
-                    AppVersion? version = GetVersion(DirectoryName);
-                    if (version != null)
-                    {
-                        versions.Add(version);
-                    }
-                }
-
-                int Major = versions.Select(x => x.Major).Max();
-                int Minor = versions.Where(x => x.Major == Major).Select(x => x.Minor).Max();
-                int Build = versions.Where(x => x.Major == Major && x.Minor == Minor).Select(x => x.Build).Max();
-                int Patch = versions.Where(x => x.Major == Major && x.Minor == Minor && x.Build == Build).Select(x => x.Patch).Max();
-
-                return Major + "_" + Minor + "_" + Build + "_" + Patch;
+                return null;
             }
-            return null;
+
+            List<AppVersion> versions = [];
+            string[] DirectoryNames = Directory.GetDirectories(ProductionDeploymentDirectory);
+            foreach (string DirectoryName in DirectoryNames)
+            {
+                AppVersion? version = GetVersion(DirectoryName);
+                if (version != null)
+                {
+                    versions.Add(version);
+                }
+            }
+            if (versions.Count == 0) return null;
+
+            int Major = versions.Select(x => x.Major).Max();
+            int Minor = versions.Where(x => x.Major == Major).Select(x => x.Minor).Max();
+            int Build = versions.Where(x => x.Major == Major && x.Minor == Minor).Select(x => x.Build).Max();
+            int Patch = versions.Where(x => x.Major == Major && x.Minor == Minor && x.Build == Build).Select(x => x.Patch).Max();
+
+            return Major + "_" + Minor + "_" + Build + "_" + Patch;
         }
 
         /// <summary>

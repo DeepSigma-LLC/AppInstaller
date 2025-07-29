@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 namespace AppInstaller.Classes
 {
-    public class DirectoryFileUpdateController
+    public class DirectoryFileReplacer
     {
         public EventHandler<string>? Update_Event_Progress;
-
-        private bool OverwriteConfigFile {  get; set; }
         private List<string> filters { get; set; }
-        public DirectoryFileUpdateController(bool OverwriteConfig, List<string>? filters = null)
+        public DirectoryFileReplacer(List<string>? filters = null)
         {
-            this.OverwriteConfigFile = OverwriteConfig;
             this.filters = filters ?? [];
         }
 
@@ -127,11 +124,6 @@ namespace AppInstaller.Classes
                     File.Delete(Path.Combine(current_install_path, file));
                     Update_Event_Progress?.Invoke(null, "File deleted: " + file);
                 }
-                else if (OkToDeleteConfig(file))
-                {
-                    File.Delete(Path.Combine(current_install_path, file));
-                    Update_Event_Progress?.Invoke(null, "File deleted: " + file);
-                }
                 else
                 {
                     Update_Event_Progress?.Invoke(null, "File Ignored: " + file);
@@ -170,21 +162,6 @@ namespace AppInstaller.Classes
         {
             return !IgnoreFileUtilities.IgnoreItem(file_system_item, filters);
         }
-
-        /// <summary>
-        /// Checks if the file is the config file and if it is ok to delete.
-        /// </summary>
-        /// <param name="file_name"></param>
-        /// <returns></returns>
-        private bool OkToDeleteConfig(string file_name)
-        {
-            if (OverwriteConfigFile == true && file_name == "Config.json")
-            {
-                return true;
-            }
-            return false;
-        }
-
 
     }
 }
