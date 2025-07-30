@@ -44,7 +44,7 @@ namespace AppInstaller.Views
             }
             
             App.AppConfig.TargetInstallLocation = install_folder;
-            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
+            this.Frame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Location_Button_Click(object sender, RoutedEventArgs e)
@@ -58,12 +58,12 @@ namespace AppInstaller.Views
 
         private void Skip_Button_Click(object sender, RoutedEventArgs args)
         {
-            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPromptUser));
+            this.Frame.Navigate(typeof(InstallPromptUser));
         }
 
         private void Install_Page_Button_Click(object sender, RoutedEventArgs eventArgs)
         {
-            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
+            this.Frame.Navigate(typeof(InstallPage));
         }
     }
 }

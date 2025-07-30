@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,25 @@ namespace AppInstaller.Classes
 {
     internal static class WindowsProcess
     {
+
+        internal static void OpenFolder(string folderPath)
+        {
+            if (Directory.Exists(folderPath))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = folderPath,
+                    UseShellExecute = true // Must be true to open in Explorer
+                });
+            }
+            else
+            {
+                // Optionally show a message or handle the error
+                Debug.WriteLine("Folder does not exist.");
+                throw new DirectoryNotFoundException($"Directory not found: {folderPath}");
+            }
+        }
+
         internal static string? ExecuteCommand(string Command, string file_name = "cmd.exe")
         {
             ProcessStartInfo startInfo = new ProcessStartInfo

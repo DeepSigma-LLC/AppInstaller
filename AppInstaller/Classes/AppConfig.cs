@@ -29,29 +29,26 @@ namespace AppInstaller.Classes
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public bool DoesSourceDirectoryContainVersioningDirectories()
-        {
-            string app_file_path = Path.Combine(SourceDirectoryPath, AppExeFile);
-            string? max_version = TryGetLatestVersionDirectory();
-            if(String.IsNullOrEmpty(max_version) == false)
-            {
-                return true;
-            }
-            return false;
-        }
 
-        public string GetSourceDirectory()
+        public string? GetSourceDirectory()
         {
-            string source_directory = SourceDirectoryPath;
+            string? source_directory = SourceDirectoryPath;
+            if(String.IsNullOrEmpty(source_directory)) return null;
+
             string? LatestVersionDirectory = TryGetLatestVersionDirectory();
-            if (DoesSourceDirectoryContainVersioningDirectories() == true && LatestVersionDirectory is not null)
+            if (LatestVersionDirectory is not null && DoesSourceDirectoryContainVersioningDirectories() == true)
             {
                 source_directory = Path.Combine(source_directory, LatestVersionDirectory);
             }
             return source_directory;
         }
 
-       
+        public bool DoesSourceDirectoryContainVersioningDirectories()
+        {
+            string? max_version = TryGetLatestVersionDirectory();
+            return !String.IsNullOrEmpty(max_version);
+        }
+
         public List<string> GetIgnoreFilters()
         {
             string selectedPath = TargetInstallLocation ?? GetCurrentLocationOfTheAppInstallerApp();

@@ -28,9 +28,8 @@ namespace AppInstaller
     /// </summary>
     public partial class App : Application
     {
-        public  static AppConfig AppConfig { get; set; }
+        public static AppConfig AppConfig { get; set; } = new();
         public static MainWindow? MyWindow { get; private set; }
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -38,7 +37,6 @@ namespace AppInstaller
         public App()
         {
             InitializeComponent();
-            AppConfig = new AppConfig();
         }
 
         /// <summary>
@@ -58,12 +56,14 @@ namespace AppInstaller
         {
 
             string[] commandArgs = Environment.GetCommandLineArgs();
-
-            if (commandArgs.Length > 1) // args[0] is the executable path
+            if (commandArgs.Length >= 2) // args[0] is the executable path
             {
-                string passedArg = commandArgs[1];
-                // Do something with it
-                throw new Exception($"Argument passed: {passedArg}");
+                AppConfig.SourceDirectoryPath = commandArgs[1];
+            }
+            
+            if(commandArgs.Length >= 3)
+            {
+                AppConfig.TargetInstallLocation = commandArgs[2];
             }
         }
     }

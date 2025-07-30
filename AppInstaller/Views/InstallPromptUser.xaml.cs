@@ -32,11 +32,24 @@ namespace AppInstaller.Views
         {
             InitializeComponent();
             SetGitVersion();
+            LoadValuesFromAppConfig();
+        }
+
+        private void LoadValuesFromAppConfig()
+        {
+            textbox_source_directory.Text = App.AppConfig.GetSourceDirectory() ?? String.Empty;
+            textbox_selectedFilePath.Text = App.AppConfig.TargetInstallLocation;
+            textbox_appName.Text = App.AppConfig.GetAppNameToInstall();
+
         }
 
         private void Git_Repo_Download_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            GitRepoDownload repoDownload = new GitRepoDownload();
+            DirectoryInfo results = repoDownload.RunDownload(SelectedGitUrl.Text.Trim());
+            WindowsProcess.OpenFolder(results.FullName);
+            App.AppConfig.SourceDirectoryPath = results.FullName;
+            LoadValuesFromAppConfig();
         }
 
         private async void Install_Button_Click(object sender, RoutedEventArgs e)
@@ -57,7 +70,7 @@ namespace AppInstaller.Views
 
         private bool IsInstallPathValid()
         {
-            string selectedPath = selectedFilePath.Text;
+            string selectedPath = App.AppConfig.TargetInstallLocation;
             bool isPathValid = Directory.Exists(selectedPath);
 
             bool isPathEmpty = false;
@@ -70,17 +83,17 @@ namespace AppInstaller.Views
 
         private void Install()
         {
-            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
+            this.Frame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Click(object sender, RoutedEventArgs e)
         {
-            selectedFilePath.Text = String.Empty;
             if(App.MyWindow is not null)
             {
                 selectedInstallLocation = await fileSelector.SelectFolderAsync(App.MyWindow, (Button)sender);
-                selectedFilePath.Text = selectedInstallLocation ?? String.Empty;
+                App.AppConfig.TargetInstallLocation = selectedInstallLocation ?? String.Empty;
             }
+            LoadValuesFromAppConfig();
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
@@ -92,11 +105,6 @@ namespace AppInstaller.Views
         {
             string? result = WindowsProcess.ProgramInstalledVersion("git");
             textbox_Installed_Git_Version.Text = result ?? "Not Installed";
-        }
-
-        private void Git_Repo_Download_And_Install_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -17,17 +17,15 @@ namespace AppInstaller.Classes
         /// <returns></returns>
         internal static string? GetLatestVersionFolder(string ProductionDeploymentDirectory)
         {
-            if (Path.Exists(ProductionDeploymentDirectory))
-            {
-                return null;
-            }
+            if (Path.Exists(ProductionDeploymentDirectory) == false) return null;
+
 
             List<AppVersion> versions = [];
             string[] DirectoryNames = Directory.GetDirectories(ProductionDeploymentDirectory);
             foreach (string DirectoryName in DirectoryNames)
             {
                 AppVersion? version = GetVersion(DirectoryName);
-                if (version != null)
+                if (version is not null)
                 {
                     versions.Add(version);
                 }
@@ -50,6 +48,8 @@ namespace AppInstaller.Classes
         private static AppVersion? GetVersion(string DirectoryName)
         {
             string[] values = DirectoryName.Split('_');
+            if(values.Length != 4) return null;
+
             bool MajorSuccess = Int32.TryParse(values[0], out int Major);
             bool MinorSuccess = Int32.TryParse(values[1], out int Minor);
             bool BuildSuccess = Int32.TryParse(values[2], out int Build);

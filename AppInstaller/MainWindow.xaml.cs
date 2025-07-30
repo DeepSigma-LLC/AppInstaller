@@ -30,7 +30,6 @@ namespace AppInstaller
     public sealed partial class MainWindow : Window
     {
         public string VersionText { get; set; }
-        public Frame ContentFrame => this.contentFrame;
         public MainWindow()
         {
             InitializeComponent();
