@@ -1,3 +1,4 @@
+using AppInstaller.Classes;
 using AppInstaller.Classes.UI.ControlUtilities;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -8,12 +9,12 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using AppInstaller.Classes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -43,7 +44,7 @@ namespace AppInstaller.Views
             }
             
             App.AppConfig.TargetInstallLocation = install_folder;
-            this.Frame.Navigate(typeof(InstallPage));
+            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Location_Button_Click(object sender, RoutedEventArgs e)
@@ -53,6 +54,16 @@ namespace AppInstaller.Views
                 string? selectedFolder = await folderSelector.SelectFolderAsync(App.MyWindow, (Button)sender);
                 SelectedInstallLocation.Text = selectedFolder ?? String.Empty;
             }
+        }
+
+        private void Skip_Button_Click(object sender, RoutedEventArgs args)
+        {
+            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPromptUser));
+        }
+
+        private void Install_Page_Button_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,14 +30,16 @@ namespace AppInstaller
     public sealed partial class MainWindow : Window
     {
         public string VersionText { get; set; }
+        public Frame ContentFrame => this.contentFrame;
         public MainWindow()
         {
             InitializeComponent();
             NavigateToStartPage();
             SetFixedWindowSize();
-           
+
             VersionText = GetAppVersion(); // You must set the value before setting the data context
             RootGrid.DataContext = this; // You must do this last
+           
         }
 
         private string GetAppVersion()

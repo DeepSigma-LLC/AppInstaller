@@ -9,12 +9,12 @@ namespace AppInstaller.Classes
 {
     internal static class WindowsProcess
     {
-        internal static async Task<string?> ExecuteCommand(string Command, string file_name = "cmd.exe")
+        internal static string? ExecuteCommand(string Command, string file_name = "cmd.exe")
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = file_name, //Or powershell.exe
-                Arguments = Command,
+                Arguments = $"/c {Command}",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
@@ -25,18 +25,18 @@ namespace AppInstaller.Classes
                 if (process is null) return null;
 
                 string output = process.StandardOutput.ReadToEnd();
-                await process.WaitForExitAsync();
+                process.WaitForExit();
                 return output;
             }
         }
 
 
-        internal static async Task<bool> IsProgramInstalled(string ProgramName, string file_name = "cmd.exe")
+        internal static bool IsProgramInstalled(string ProgramName, string file_name = "cmd.exe")
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = file_name, //Or powershell.exe
-                Arguments = ProgramName + " --version",
+                Arguments = $"/c {ProgramName} --version",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
@@ -47,7 +47,7 @@ namespace AppInstaller.Classes
                 if (process is null) return false;
 
                 string output = process.StandardOutput.ReadToEnd();
-                await process.WaitForExitAsync();
+                process.WaitForExit();
 
                 foreach(string error in GetErrorResponses())
                 {
@@ -60,12 +60,12 @@ namespace AppInstaller.Classes
             }
         }
 
-        internal static async Task<string?> ProgramInstalledVersion(string ProgramName, string file_name = "cmd.exe")
+        internal static string? ProgramInstalledVersion(string ProgramName, string file_name = "cmd.exe")
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = file_name, //Or powershell.exe
-                Arguments = ProgramName + " --version",
+                Arguments = $"/c {ProgramName} --version",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
@@ -76,7 +76,7 @@ namespace AppInstaller.Classes
                 if (process is null) return null;
 
                 string output = process.StandardOutput.ReadToEnd();
-                await process.WaitForExitAsync();
+                process.WaitForExit();
 
                 foreach (string error in GetErrorResponses())
                 {

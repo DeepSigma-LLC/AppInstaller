@@ -26,12 +26,11 @@ namespace AppInstaller.Views
     public sealed partial class InstallPromptUser : Page
     {
 
-        private FolderSelector fileSelector {  get; set; }
+        private FolderSelector fileSelector { get; set; } = new();
         private string? selectedInstallLocation { get; set; }
         public InstallPromptUser()
         {
             InitializeComponent();
-            fileSelector = new FolderSelector();
             SetGitVersion();
         }
 
@@ -71,7 +70,7 @@ namespace AppInstaller.Views
 
         private void Install()
         {
-            this.Frame.Navigate(typeof(InstallPage));
+            App.MyWindow?.ContentFrame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Click(object sender, RoutedEventArgs e)
@@ -89,9 +88,9 @@ namespace AppInstaller.Views
             AppUtilities.ExitApp();
         }
 
-        private async void SetGitVersion()
+        private void SetGitVersion()
         {
-            string? result = await WindowsProcess.ProgramInstalledVersion("git");
+            string? result = WindowsProcess.ProgramInstalledVersion("git");
             textbox_Installed_Git_Version.Text = result ?? "Not Installed";
         }
     }
