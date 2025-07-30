@@ -11,7 +11,6 @@ namespace AppInstaller.Classes
 {
     public class AppConfig
     {
-        public string AppExeFile { get; set; } = String.Empty;
         public string IgnoreFileName { get; set; } = "AppIgnore.txt";
         public string SourceDirectoryPath { private get; set; } = String.Empty;
         public string TargetInstallLocation { get; set; } = String.Empty;
@@ -56,9 +55,27 @@ namespace AppInstaller.Classes
             return controller.GetIgnoreFilters();
         }
 
-        public string GetAppNameToInstall()
+        public string? GetAppExeFileNameToInstall()
         {
-            return this.AppExeFile.Replace(".exe", "");
+            string? SourceDirectory = GetSourceDirectory();
+            if(SourceDirectory is null) return null;
+
+            string[] files = Directory.GetFiles(SourceDirectory);
+            foreach(string file in files)
+            {
+                if (file.EndsWith(".exe"))
+                {
+                    return Path.GetFileName(file);
+                }
+            }
+            return null;
+        }
+
+        public string? GetAppNameToInstall()
+        {
+            string? file_name = GetAppExeFileNameToInstall();
+            if(file_name is null) return null;
+            return file_name.Replace(".exe", "");
         }
         private string? TryGetLatestVersionDirectory()
         {

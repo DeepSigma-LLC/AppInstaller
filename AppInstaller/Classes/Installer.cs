@@ -28,18 +28,36 @@ namespace AppInstaller.Classes
         public void Run()
         {
             if (String.IsNullOrEmpty(config.GetAppNameToInstall())) return;
+
+            string? app_name = config.GetAppNameToInstall();
+            Progress_Log?.Invoke(null, "Validating app name...");
+            if (app_name is null)
+            {
+                Progress_Log?.Invoke(null, "ERROR: App name cannot be null. Ending process...");
+                return;
+            }
+
+            string? source_directory = config.GetSourceDirectory();
+            Progress_Log?.Invoke(null, "Validating source directory...");
+            if (source_directory is null)
+            {
+                Progress_Log?.Invoke(null, "ERROR: Source directory cannot be null. Ending process...");
+                return;
+            }
+
+            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
+            Progress_Log?.Invoke(null, "Validating target directory...");
+            if (ThisIsTheRightDirectory(destination_path, app_name) == false)
+            {
+                Progress_Log?.Invoke(null, "This doesn't look like the right directory. Stopping the update process.");
+                return;
+            }
+
             Progress_Log?.Invoke(null, "Starting application installation...");
             Progress_Log?.Invoke(null, "Load ignore filters...");
             List<string> filters = config.GetIgnoreFilters();
             fileController.SetFilters(filters);
 
-            string destination_path = Path.Combine(config.TargetInstallLocation, config.GetAppNameToInstall());
-            Progress_Log?.Invoke(null, "Checking target directory status...");
-            if (ThisIsTheRightDirectory(destination_path) == false)
-            {
-                Progress_Log?.Invoke(null, "This doesn't look like the right directory. Stopping the update process.");
-                return;
-            }
             CreateDirectoryIfNeeded(destination_path);
 
             Progress_Log?.Invoke(null, "Starting directory clean up...");
@@ -48,7 +66,6 @@ namespace AppInstaller.Classes
             Progress_Log?.Invoke(null, "Directory is now clean...");
             Progress_Log?.Invoke(null, "Initiating file transfer...");
 
-            string source_directory = config.GetSourceDirectory();
             fileController.CopyDirectoryRecursively(source_directory, destination_path);
 
             if (add_to_enivronment_path_variable == true)
@@ -73,9 +90,9 @@ namespace AppInstaller.Classes
             }
         }
 
-        private bool ThisIsTheRightDirectory(string app_level_folder_path, bool already_installed = true)
+        private bool ThisIsTheRightDirectory(string app_level_folder_path, string app_name, bool already_installed = true)
         {
-            string destination_path = Path.Combine(config.TargetInstallLocation, config.GetAppNameToInstall());
+            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
             if(app_level_folder_path == destination_path)
             {
                 return true;
@@ -85,10 +102,9 @@ namespace AppInstaller.Classes
 
         private void AddInstalledAppToEnvironmentPath(string installed_app_directory_path)
         {
-            string app_file_full_path = Path.Combine(installed_app_directory_path, App.AppConfig.AppExeFile);
             if (add_to_enivronment_path_variable == true)
             {
-                EnvironmentVariables.AddToPath(app_file_full_path);
+                EnvironmentVariables.AddToPath(installed_app_directory_path);
             }
         }
     }
