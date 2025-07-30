@@ -93,5 +93,10 @@ namespace AppInstaller.Views
             string? result = WindowsProcess.ProgramInstalledVersion("git");
             textbox_Installed_Git_Version.Text = result ?? "Not Installed";
         }
+
+        private void Git_Repo_Download_And_Install_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

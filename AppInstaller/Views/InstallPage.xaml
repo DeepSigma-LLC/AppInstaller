@@ -8,20 +8,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="10, 0, 10, 0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
 
+    <StackPanel Padding="15, 0, 15, 0">
         <!--RichEditBox x:Name="textbox_log" Grid.Row="0" FontSize="11" TextWrapping="Wrap" IsSpellCheckEnabled="False" IsEnabled="False"/-->
-        <Border Grid.Row="0" BorderThickness="2" BorderBrush="Gray" Background="Black" CornerRadius="5" Padding="10, 5, 5, 10">
-            <RichTextBlock x:Name="RichTextBlock"/>
+        <Border BorderThickness="2" BorderBrush="Gray" Background="Black" CornerRadius="5" Padding="10, 5, 5, 10">
+            <RichTextBlock x:Name="RichTextBlock" Height="300"/>
         </Border>
-        <TextBlock Grid.Row="1"/>
-        <ProgressBar x:Name="progressBar" Grid.Row="2" IsIndeterminate="True" ShowPaused="False" ShowError="False"  HorizontalAlignment="Stretch"/>
-        <TextBlock Grid.Row="3" FontSize="7"/>
-    </Grid>
+        
+        <TextBlock/>
+        <ProgressBar x:Name="progressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"  HorizontalAlignment="Stretch"/>
+        <TextBlock FontSize="7"/>
+    </StackPanel>
 </Page>

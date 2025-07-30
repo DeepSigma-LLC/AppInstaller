@@ -60,7 +60,7 @@ namespace AppInstaller.Views
 
             if(true)
             {
-                installer.Run();
+                //installer.Run();
             }
 
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_white);

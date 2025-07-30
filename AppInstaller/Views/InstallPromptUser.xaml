@@ -8,54 +8,37 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <ScrollViewer>
-        <Grid Padding="20, 0, 20 ,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
+    <ScrollViewer>
+        <StackPanel Padding="20, 0, 20 ,0">
+            <StackPanel>
                 <TextBlock Text="Application Name:" Padding="0, 0, 0, 10"/>
                 <TextBox PlaceholderText="Application Name" IsEnabled="False"/>
                 <TextBlock/>
             </StackPanel>
 
-            <Expander Grid.Row="1"  Header="Git Repo Download" HorizontalAlignment="Stretch">
-                <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+            <Expander Header="Git Repo Download" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <StackPanel>
+                    <TextBox  x:Name="textbox_Installed_Git_Version" PlaceholderText="Git Version" Header="Installed Version of Git:" IsEnabled="False" HorizontalAlignment="Stretch"/>
+                    <TextBlock  FontSize="5"/>
+                    <TextBlock Text="Git Repo:" Padding="0, 15, 0, 10"/>
+                    <TextBox PlaceholderText="Git Repo HTTPs URL" IsEnabled="True" HorizontalAlignment="Stretch"/>
+                    <TextBlock/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="Download Only" Click="Git_Repo_Download_Click" MinWidth="150" />
+                        <TextBlock Padding="10, 0, 0,0"/>
+                        <Button Content="Download and Install" Click="Git_Repo_Download_And_Install_Click" Style="{StaticResource AccentButtonStyle}" MinWidth="150"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
 
-                    <TextBox Grid.Row="0" x:Name="textbox_Installed_Git_Version" PlaceholderText="Git Version" Header="Installed Version of Git:" IsEnabled="False"/>
-                    <TextBlock Grid.Row="1" FontSize="5"/>
-                    <TextBlock Grid.Row="2" Text="Git Repo:" Padding="0, 15, 0, 10"/>
-                    <TextBox Grid.Row="3" PlaceholderText="Git Repo HTTPs URL" IsEnabled="True"/>
-                    <TextBlock Grid.Row="4"/>
-                    <Button Grid.Row="5" Content="Download" Click="Git_Repo_Download_Click"/>
-                </Grid>
-                    
-                </Expander>
-
-            <StackPanel Grid.Row="2">
+            <StackPanel>
                 <TextBlock Text="Source Location:" Padding="0, 15, 0, 10"/>
                 <TextBox PlaceholderText="Source Directory Location" IsEnabled="False"/>
                 <TextBlock Text="Target Install Location:" Padding="0, 15, 0, 10"/>
             </StackPanel>
-                
-        
-             <Grid Grid.Row="3" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
+
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -66,11 +49,11 @@
                 <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
                 <Button Grid.Column="2" Content="Select Location" Click="Select_Folder_Click"/>
             </Grid>
-        
+
             <StackPanel Grid.Row="4" Orientation="Horizontal" Padding="0, 20, 0, 0"  Spacing="10" HorizontalAlignment="Center">
                 <Button Content="Install" Style="{StaticResource AccentButtonStyle}" Click="Install_Button_Click"/>
                 <Button Content="Cancel" Click="Cancel_Button_Click"/>
             </StackPanel>
-        </Grid>
+        </StackPanel>
     </ScrollViewer>
 </Page>
