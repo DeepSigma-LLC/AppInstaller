@@ -60,10 +60,5 @@ namespace AppInstaller.Views
         {
             this.Frame.Navigate(typeof(InstallPromptUser));
         }
-
-        private void Install_Page_Button_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            this.Frame.Navigate(typeof(InstallPage));
-        }
     }
 }

@@ -48,38 +48,22 @@ namespace AppInstaller.Views
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", color_white);
         }
 
-        private async void Main_Loaded(object sender, RoutedEventArgs e)
+        private void Main_Loaded(object sender, RoutedEventArgs e)
         {
-            await UpdateTextAsync();
+            UpdateTextAsync();
         }
 
-        private async Task UpdateTextAsync()
+        private void UpdateTextAsync()
         {
             Color color_white = Color.White;
             Color color_green = Color.LightGreen;
 
-            if(true)
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_green);
+
+            if (true)
             {
-                //installer.Run();
+                installer.Run();
             }
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", color_white);
-            await Task.Delay(1000);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Analyzing file structure... ", color_white);
-            await Task.Delay(4000);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Deleting old files.. ", color_white);
-            await Task.Delay(3000);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Transfering new files... ", color_white);
-            await Task.Delay(3000);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Successful!\n", color_green);
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", color_green);
 
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "Done! ", color_green);
             RichEditBoxLogging.AppendColoredText(RichTextBlock, "This application will close in 5 seconds and relaunch your target application.", color_white);

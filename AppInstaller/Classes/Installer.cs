@@ -49,15 +49,16 @@ namespace AppInstaller.Classes
             Progress_Log?.Invoke(null, "Validating target directory...");
             if (ThisIsTheRightDirectory(destination_path, app_name) == false)
             {
-                Progress_Log?.Invoke(null, "This doesn't look like the right directory. Stopping the update process.");
+                Progress_Log?.Invoke(null, "ERROR: This doesn't look like the right directory. Ending process...");
                 return;
             }
 
-            Progress_Log?.Invoke(null, "Starting application installation...");
-            Progress_Log?.Invoke(null, "Load ignore filters...");
+            Progress_Log?.Invoke(null, "Beginning installation...");
+            Progress_Log?.Invoke(null, "Loading ignore filters...");
             List<string> filters = config.GetIgnoreFilters();
             fileController.SetFilters(filters);
 
+            Progress_Log?.Invoke(null, "Checking if directory has been created...");
             CreateDirectoryIfNeeded(destination_path);
 
             Progress_Log?.Invoke(null, "Starting directory clean up...");
