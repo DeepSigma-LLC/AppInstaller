@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppInstaller.Classes
+namespace BusinessLogic
 {
     public class DirectoryFileReplacer
     {

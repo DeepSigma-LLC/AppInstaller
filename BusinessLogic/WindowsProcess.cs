@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppInstaller.Classes
+namespace BusinessLogic
 {
-    internal static class WindowsProcess
+    public static class WindowsProcess
     {
 
         /// <summary>
@@ -17,7 +16,7 @@ namespace AppInstaller.Classes
         /// </summary>
         /// <param name="folderPath"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        internal static void OpenFolder(string folderPath)
+        public static void OpenFolder(string folderPath)
         {
             if (Directory.Exists(folderPath))
             {
@@ -40,7 +39,7 @@ namespace AppInstaller.Classes
         /// </summary>
         /// <param name="Command"></param>
         /// <returns></returns>
-        internal static string? ExecuteCommand(string Command)
+        public static string? ExecuteCommand(string Command)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -67,7 +66,7 @@ namespace AppInstaller.Classes
         /// </summary>
         /// <param name="ProgramName"></param>
         /// <returns></returns>
-        internal static bool IsProgramInstalled(string ProgramName)
+        public static bool IsProgramInstalled(string ProgramName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -101,7 +100,7 @@ namespace AppInstaller.Classes
         /// </summary>
         /// <param name="ProgramName"></param>
         /// <returns></returns>
-        internal static string? ProgramInstalledVersion(string ProgramName)
+        public static string? ProgramInstalledVersion(string ProgramName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {

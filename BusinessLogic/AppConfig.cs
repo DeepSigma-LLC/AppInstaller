@@ -8,7 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppInstaller.Classes
+namespace BusinessLogic
 {
     public class AppConfig
     {

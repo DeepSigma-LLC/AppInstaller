@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 
-namespace AppInstaller.Classes
+namespace BusinessLogic
 {
     public static class EnvironmentVariables
     {
