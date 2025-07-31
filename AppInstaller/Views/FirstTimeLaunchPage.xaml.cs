@@ -48,8 +48,7 @@ namespace AppInstaller.Views
             App.AppConfig.TargetInstallLocation = install_folder;
             App.AppConfig.AppNameUsedForValidation = App.NameWithoutSpaces;
             App.AppConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
-            //this.Frame.Navigate(typeof(InstallPage));
-            this.Frame.Navigate(typeof(InstallPromptUser));
+            this.Frame.Navigate(typeof(InstallPage));
         }
 
         private async void Select_Folder_Location_Button_Click(object sender, RoutedEventArgs e)

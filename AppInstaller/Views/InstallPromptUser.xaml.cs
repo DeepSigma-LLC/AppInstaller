@@ -25,7 +25,6 @@ namespace AppInstaller.Views
     /// </summary>
     public sealed partial class InstallPromptUser : Page
     {
-
         private FolderSelector fileSelector { get; set; } = new();
         private string? selectedInstallLocation { get; set; }
         public InstallPromptUser()
@@ -59,7 +58,7 @@ namespace AppInstaller.Views
                 await MessageBox.ShowDialogAsync((FrameworkElement)sender,
                 contentMessage: "Your install is about to begin. \n\nAre you sure you want to continue?",
                 primaryButtonText: "Yes",
-                successMethod: Install,
+                successMethod: GoToInstall,
                 closeButtonText: "Cancel");
                 return;
             }
@@ -73,15 +72,20 @@ namespace AppInstaller.Views
             string selectedPath = App.AppConfig.TargetInstallLocation;
             bool isPathValid = Directory.Exists(selectedPath);
 
-            bool isPathEmpty = false;
-            if (isPathValid)
+            if (isPathValid == false)
             {
-                isPathEmpty = Directory.EnumerateFileSystemEntries(selectedPath).Count() == 0;
+                return false;
             }
+            else if (App.AppConfig.IsAppUpdate())
+            {
+                return isPathValid;
+            }
+            bool isPathEmpty = Directory.EnumerateFileSystemEntries(selectedPath).Count() == 0;
             return isPathValid && isPathEmpty;
+           
         }
 
-        private void Install()
+        private void GoToInstall()
         {
             this.Frame.Navigate(typeof(InstallPage));
         }
