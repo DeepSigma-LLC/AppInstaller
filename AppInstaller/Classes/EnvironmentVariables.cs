@@ -21,7 +21,7 @@ namespace AppInstaller.Classes
             if (currentPath is not null && currentPath.Contains(newPath) == false)
             {
                 string updatedPath = currentPath + ";" + newPath;
-                Environment.SetEnvironmentVariable(path_name, updatedPath);
+                Environment.SetEnvironmentVariable(path_name, updatedPath, EnvironmentVariableTarget.User);
             }
             else
             {

@@ -35,7 +35,7 @@ namespace AppInstaller.Views
         public InstallPage()
         {
             InitializeComponent();
-            installer = new Installer(new AppConfig());
+            installer = new Installer(App.AppConfig);
 
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
             installer.Progress_Log += UpdateProgress;
@@ -48,7 +48,7 @@ namespace AppInstaller.Views
 
         private void UpdateTextAsync()
         {
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... ", Color.LightGreen);
+            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... \n", Color.LightGreen);
 
             if (App.AppConfig.ValidateThatAllAppNamesMatch() == false)
             {

@@ -149,7 +149,7 @@ namespace AppInstaller.Classes
             {
                 if (file.EndsWith(".exe"))
                 {
-                    return file;
+                    return Path.GetFileName(file);
                 }
             }
             return null;

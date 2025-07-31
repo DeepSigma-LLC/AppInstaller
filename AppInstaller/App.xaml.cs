@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -58,6 +59,15 @@ namespace AppInstaller
         {
 
             string[] commandArgs = Environment.GetCommandLineArgs();
+
+            if (commandArgs.Length == 2 && commandArgs[1].Trim().ToLower() == "--version") // args[0] is the executable path
+            {
+                AllocConsole();
+                Console.WriteLine(AppUtilities.GetAppVersion());
+                Console.Out.Flush();
+                AppUtilities.ExitApp();
+            }
+
             if (commandArgs.Length >= 2) // args[0] is the executable path
             {
                 AppConfig.AppNameUsedForValidation = commandArgs[1];
@@ -73,5 +83,9 @@ namespace AppInstaller
                 AppConfig.TargetInstallLocation = commandArgs[3];
             }
         }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
     }
 }

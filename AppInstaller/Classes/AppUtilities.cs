@@ -22,5 +22,19 @@ namespace AppInstaller.Classes
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
+        public static string GetAppVersion()
+        {
+            try
+            {
+                var version = Windows.ApplicationModel.Package.Current.Id.Version;
+                return $"Version: {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            }
+            catch
+            {
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return "Version: " + version?.ToString() ?? "Unknown";
+            }
+        }
+
     }
 }

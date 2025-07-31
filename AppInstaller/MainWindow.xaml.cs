@@ -38,22 +38,8 @@ namespace AppInstaller
             SetFixedWindowSize();
 
             AppName = App.Name;
-            VersionText = GetAppVersion(); // You must set the value before setting the data context
+            VersionText = AppUtilities.GetAppVersion(); // You must set the value before setting the data context
             RootGrid.DataContext = this; // You must do this last
-        }
-
-        private string GetAppVersion()
-        {
-            try
-            {
-                var version = Windows.ApplicationModel.Package.Current.Id.Version;
-                return $"Version: {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
-            }
-            catch
-            {
-                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                return "Version: " + version?.ToString() ?? "Unknown";
-            }
         }
 
         private void NavigateToStartPage()
