@@ -12,6 +12,11 @@ namespace AppInstaller.Classes
     internal static class WindowsProcess
     {
 
+        /// <summary>
+        /// Opens a folder location in your file system.
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         internal static void OpenFolder(string folderPath)
         {
             if (Directory.Exists(folderPath))
@@ -30,11 +35,16 @@ namespace AppInstaller.Classes
             }
         }
 
-        internal static string? ExecuteCommand(string Command, string file_name = "cmd.exe")
+        /// <summary>
+        /// Executes command in command terminal.
+        /// </summary>
+        /// <param name="Command"></param>
+        /// <returns></returns>
+        internal static string? ExecuteCommand(string Command)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = file_name, //Or powershell.exe
+                FileName = "cmd.exe", //Or powershell.exe
                 Arguments = $"/c {Command}",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -52,11 +62,16 @@ namespace AppInstaller.Classes
         }
 
 
-        internal static bool IsProgramInstalled(string ProgramName, string file_name = "cmd.exe")
+        /// <summary>
+        /// Determine if a program is installed by looking for a valid version response from the terminal.
+        /// </summary>
+        /// <param name="ProgramName"></param>
+        /// <returns></returns>
+        internal static bool IsProgramInstalled(string ProgramName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = file_name, //Or powershell.exe
+                FileName = "cmd.exe", //Or powershell.exe
                 Arguments = $"/c {ProgramName} --version",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -81,11 +96,16 @@ namespace AppInstaller.Classes
             }
         }
 
-        internal static string? ProgramInstalledVersion(string ProgramName, string file_name = "cmd.exe")
+        /// <summary>
+        /// Returns version from a terminal program name.
+        /// </summary>
+        /// <param name="ProgramName"></param>
+        /// <returns></returns>
+        internal static string? ProgramInstalledVersion(string ProgramName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = file_name, //Or powershell.exe
+                FileName = "cmd.exe", //Or powershell.exe
                 Arguments = $"/c {ProgramName} --version",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -110,6 +130,10 @@ namespace AppInstaller.Classes
             }
         }
 
+        /// <summary>
+        /// Gets an array of the most common terminal response error messages.
+        /// </summary>
+        /// <returns></returns>
         private static string[] GetErrorResponses()
         {
             return ["error", "not recognized", "not found", "exception"];

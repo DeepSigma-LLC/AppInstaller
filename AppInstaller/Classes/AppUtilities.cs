@@ -12,5 +12,15 @@ namespace AppInstaller.Classes
         {
             Environment.Exit(1);
         }
+
+        /// <summary>
+        /// Returns the current directory of this application.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCurrentLocationOfTheAppInstallerApp()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
     }
 }

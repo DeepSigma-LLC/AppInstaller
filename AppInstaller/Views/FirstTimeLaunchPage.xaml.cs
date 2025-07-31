@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -42,9 +43,13 @@ namespace AppInstaller.Views
                 await MessageBox.ShowDialogAsync(this, "Invalid Install Location Selected.", "OK");
                 return;
             }
-            
+
+            App.AppConfig.SourceDirectoryPath = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
             App.AppConfig.TargetInstallLocation = install_folder;
-            this.Frame.Navigate(typeof(InstallPage));
+            App.AppConfig.AppNameUsedForValidation = App.NameWithoutSpaces;
+            App.AppConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
+            //this.Frame.Navigate(typeof(InstallPage));
+            this.Frame.Navigate(typeof(InstallPromptUser));
         }
 
         private async void Select_Folder_Location_Button_Click(object sender, RoutedEventArgs e)

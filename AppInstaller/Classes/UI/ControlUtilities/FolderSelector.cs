@@ -12,6 +12,14 @@ namespace AppInstaller.Classes.UI.ControlUtilities
     internal class FolderSelector : ISystemSelector
     {
         public event EventHandler<string>? ErrorMessagingEvent;
+
+        /// <summary>
+        /// Enables users to select a file using the windows folder system explorer.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="sender"></param>
+        /// <param name="filters"></param>
+        /// <returns></returns>
         public async Task<string?> SelectFolderAsync(MainWindow window, Button sender, ICollection<string>? filters = null)
         {
             if (filters is null) filters = ["*"]; //Initialize to empty list if not set

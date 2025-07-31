@@ -13,6 +13,14 @@ namespace AppInstaller.Classes.UI.ControlUtilities
     public class FileSelector : ISystemSelector
     {
         public event EventHandler<string>? ErrorMessagingEvent;
+
+        /// <summary>
+        /// Enables users to select a file using the windows file system explorer.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="sender"></param>
+        /// <param name="filters"></param>
+        /// <returns></returns>
         public async Task<string?> SelectFileAsync(MainWindow window, Button sender, ICollection<string>? filters = null)
         {
             if (filters is null) filters = ["*"]; //Initialize to empty list if not set

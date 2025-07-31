@@ -9,8 +9,13 @@ namespace AppInstaller.Classes
 {
     public static class EnvironmentVariables
     {
-       public static void AddToPath(string newPath)
-       {
+        /// <summary>
+        /// Adds new path to a users enviornment variables so that the .exe program is accessible from the terminal.
+        /// </summary>
+        /// <param name="newPath"></param>
+        /// <exception cref="Exception"></exception>
+        public static void AddToPath(string newPath)
+        {
             const string path_name = "PATH";
             string? currentPath = Environment.GetEnvironmentVariable(path_name, EnvironmentVariableTarget.User);
             if (currentPath is not null && currentPath.Contains(newPath) == false)
@@ -22,7 +27,7 @@ namespace AppInstaller.Classes
             {
                 throw new Exception("Path variable is already present!");
             }
-       }
+        }
 
     }
 }

@@ -13,19 +13,18 @@ namespace AppInstaller.Classes
         private DirectoryFileReplacer fileController { get; set; }
 
         public EventHandler<string>? Progress_Log;
-        private bool add_to_enivronment_path_variable { get; }
-        public Installer(AppConfig config, bool AddPathVariable = false)
+
+        public Installer(AppConfig config)
         {
             this.config = config;
             this.fileController = new DirectoryFileReplacer();
             Progress_Log = fileController.Update_Event_Progress;
-            add_to_enivronment_path_variable = AddPathVariable;
         }
 
         /// <summary>
         /// Runs the file update program. 
         /// </summary>
-        public void Run()
+        public void Run(bool add_to_enivronment_path_variable = false)
         {
             if (String.IsNullOrEmpty(config.GetAppNameToInstall())) return;
 
@@ -45,20 +44,13 @@ namespace AppInstaller.Classes
                 return;
             }
 
-            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
-            Progress_Log?.Invoke(null, "Validating target directory...");
-            if (ThisIsTheRightDirectory(destination_path, app_name) == false)
-            {
-                Progress_Log?.Invoke(null, "ERROR: This doesn't look like the right directory. Ending process...");
-                return;
-            }
-
             Progress_Log?.Invoke(null, "Beginning installation...");
             Progress_Log?.Invoke(null, "Loading ignore filters...");
             List<string> filters = config.GetIgnoreFilters();
             fileController.SetFilters(filters);
 
             Progress_Log?.Invoke(null, "Checking if directory has been created...");
+            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
             CreateDirectoryIfNeeded(destination_path);
 
             Progress_Log?.Invoke(null, "Starting directory clean up...");
@@ -71,7 +63,8 @@ namespace AppInstaller.Classes
 
             if (add_to_enivronment_path_variable == true)
             {
-                AddInstalledAppToEnvironmentPath(destination_path);
+                Progress_Log?.Invoke(null, "Adding to user environment path...");
+                EnvironmentVariables.AddToPath(destination_path);
             }
 
             Progress_Log?.Invoke(null, "Installation is now complete!");
@@ -88,24 +81,6 @@ namespace AppInstaller.Classes
             else
             {
                 Progress_Log?.Invoke(null, $"Directory already exists: {destination_path}");
-            }
-        }
-
-        private bool ThisIsTheRightDirectory(string app_level_folder_path, string app_name, bool already_installed = true)
-        {
-            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
-            if(app_level_folder_path == destination_path)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private void AddInstalledAppToEnvironmentPath(string installed_app_directory_path)
-        {
-            if (add_to_enivronment_path_variable == true)
-            {
-                EnvironmentVariables.AddToPath(installed_app_directory_path);
             }
         }
     }

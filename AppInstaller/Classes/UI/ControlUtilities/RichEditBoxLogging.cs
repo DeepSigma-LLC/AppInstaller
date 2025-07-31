@@ -52,7 +52,11 @@ namespace AppInstaller.Classes.UI.ControlUtilities
             paragraph.Inlines.Add(run);
         }
 
-
+        /// <summary>
+        /// Convers color from system drawing color to the windows UI color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         private static Windows.UI.Color ConvertColor(System.Drawing.Color color)
         {
             Windows.UI.Color winUIColor = Windows.UI.Color.FromArgb(

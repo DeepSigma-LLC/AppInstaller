@@ -30,15 +30,16 @@ namespace AppInstaller
     public sealed partial class MainWindow : Window
     {
         public string VersionText { get; set; }
+        public string AppName { get; set; }
         public MainWindow()
         {
             InitializeComponent();
             NavigateToStartPage();
             SetFixedWindowSize();
 
+            AppName = App.Name;
             VersionText = GetAppVersion(); // You must set the value before setting the data context
             RootGrid.DataContext = this; // You must do this last
-           
         }
 
         private string GetAppVersion()
@@ -62,7 +63,7 @@ namespace AppInstaller
                 contentFrame.Navigate(typeof(Views.FirstTimeLaunchPage));
                 return;
             }
-            else if(AppConfigSerivce.GetAppConfig().IsInstallLocationNeeded() == true)
+            else if(App.AppConfig.IsInstallLocationNeeded() == true)
             {
                 contentFrame.Navigate(typeof(Views.InstallPromptUser));
                 return;

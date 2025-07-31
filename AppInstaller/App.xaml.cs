@@ -28,6 +28,8 @@ namespace AppInstaller
     /// </summary>
     public partial class App : Application
     {
+        public static string Name { get; } = "App Installer";
+        public static string NameWithoutSpaces { get; } = Name.Replace(" ", String.Empty);
         public static AppConfig AppConfig { get; set; } = new();
         public static MainWindow? MyWindow { get; private set; }
         /// <summary>
@@ -58,12 +60,17 @@ namespace AppInstaller
             string[] commandArgs = Environment.GetCommandLineArgs();
             if (commandArgs.Length >= 2) // args[0] is the executable path
             {
-                AppConfig.SourceDirectoryPath = commandArgs[1];
+                AppConfig.AppNameUsedForValidation = commandArgs[1];
             }
             
             if(commandArgs.Length >= 3)
             {
-                AppConfig.TargetInstallLocation = commandArgs[2];
+                AppConfig.SourceDirectoryPath = commandArgs[2];
+            }
+
+            if (commandArgs.Length >= 4) // args[0] is the executable path
+            {
+                AppConfig.TargetInstallLocation = commandArgs[3];
             }
         }
     }

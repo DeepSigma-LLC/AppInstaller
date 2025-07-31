@@ -17,8 +17,7 @@ namespace AppInstaller.Classes
         /// <returns></returns>
         internal static string? GetLatestVersionFolder(string ProductionDeploymentDirectory)
         {
-            if (Path.Exists(ProductionDeploymentDirectory) == false) return null;
-
+            if (Directory.Exists(ProductionDeploymentDirectory) == false) return null;
 
             List<AppVersion> versions = [];
             string[] DirectoryNames = Directory.GetDirectories(ProductionDeploymentDirectory);

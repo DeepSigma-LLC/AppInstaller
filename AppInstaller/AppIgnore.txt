@@ -11,3 +11,4 @@
 # Including "\Config*" will exclude any directory that starts with config.
 
 Config.json
+AppIgnore.txt

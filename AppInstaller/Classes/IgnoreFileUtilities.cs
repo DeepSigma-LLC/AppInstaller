@@ -8,8 +8,6 @@ namespace AppInstaller.Classes
 {
     internal static class IgnoreFileUtilities
     {
-
-
         /// <summary>
         /// Returns true if the file object passes matches a filter criteria.
         /// </summary>
