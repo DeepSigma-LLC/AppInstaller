@@ -11,17 +11,6 @@
 
     <ScrollViewer>
         <StackPanel Padding="20, 0, 20 ,0">
-            <Expander Header="Git Repo Download" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                <StackPanel>
-                    <TextBox  x:Name="textbox_Installed_Git_Version" PlaceholderText="Git Version" Header="Installed Version of Git:" IsEnabled="False" HorizontalAlignment="Stretch"/>
-                    <TextBlock  FontSize="5"/>
-                    <TextBlock Text="Git Repo:" Padding="0, 15, 0, 10"/>
-                    <TextBox x:Name="SelectedGitUrl" PlaceholderText="Git Repo HTTPs URL" IsEnabled="True" HorizontalAlignment="Stretch"/>
-                    <TextBlock/>
-                    <Button Content="Download" Click="Git_Repo_Download_Click" MinWidth="150" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Center"/>
-                    </StackPanel>
-            </Expander>
-            
             <TextBlock Text="Application Name:" Padding="0, 10, 0, 10"/>
             <TextBox x:Name="textbox_appName"  PlaceholderText="Application Name" IsEnabled="False"/>
             <TextBlock FontSize="5"/>
@@ -46,6 +35,18 @@
                 <Button Content="Cancel" Click="Cancel_Button_Click"/>
             </StackPanel>
             <TextBlock></TextBlock>
+            <Expander Header="Git Repo Download" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <StackPanel>
+                    <TextBox  x:Name="textbox_Installed_Git_Version" PlaceholderText="Git Version" Header="Installed Version of Git:" IsEnabled="False" HorizontalAlignment="Stretch"/>
+                    <TextBlock  FontSize="5"/>
+                    <TextBlock Text="Git Repo:" Padding="0, 15, 0, 10"/>
+                    <TextBox x:Name="SelectedGitUrl" PlaceholderText="Git Repo HTTPs URL" IsEnabled="True" HorizontalAlignment="Stretch"/>
+                    <TextBlock/>
+                    <Button Content="Download" Click="Git_Repo_Download_Click" MinWidth="150" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Expander>
+            <TextBlock/>
+
         </StackPanel>
     </ScrollViewer>
 </Page>

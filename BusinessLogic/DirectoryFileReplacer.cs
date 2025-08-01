@@ -9,7 +9,7 @@ namespace BusinessLogic
 {
     public class DirectoryFileReplacer
     {
-        public EventHandler<string>? Update_Event_Progress;
+        public EventHandler<MessageResult>? Update_Event_Progress;
         private List<string> filters { get; set; }
         public DirectoryFileReplacer(List<string>? filters = null)
         {
@@ -72,7 +72,7 @@ namespace BusinessLogic
                 string dirName = Path.GetFileName(subDir);
                 string destSubDir = Path.Combine(destinationDir, dirName);
                 CopyDirectoryRecursively(subDir, destSubDir);
-                Update_Event_Progress?.Invoke(null, "Directory copied: " + dirName);
+                Update_Event_Progress?.Invoke(null, new MessageResult("Directory copied: " + dirName));
             }
         }
 
@@ -88,7 +88,7 @@ namespace BusinessLogic
                 string fileName = Path.GetFileName(filePath);
                 string destFilePath = Path.Combine(destinationDir, fileName);
                 File.Copy(filePath, destFilePath);
-                Update_Event_Progress?.Invoke(null, "File copied: " + fileName);
+                Update_Event_Progress?.Invoke(null, new MessageResult("File copied: " + fileName));
             }
         }
 
@@ -105,7 +105,7 @@ namespace BusinessLogic
                 string destSubDir = Path.Combine(directory_path, dirName);
                 DeleteDirectoryRecursively(destSubDir);
                 DeleteDirectories(destSubDir);
-                Update_Event_Progress?.Invoke(null, "Directory delected: " + dirName);
+                Update_Event_Progress?.Invoke(null, new MessageResult("Directory delected: " + dirName));
             }
         }
 
@@ -122,11 +122,11 @@ namespace BusinessLogic
                 if (OkToDelete(file))
                 {
                     File.Delete(Path.Combine(current_install_path, file));
-                    Update_Event_Progress?.Invoke(null, "File deleted: " + file);
+                    Update_Event_Progress?.Invoke(null, new MessageResult("File deleted: " + file));
                 }
                 else
                 {
-                    Update_Event_Progress?.Invoke(null, "File Ignored: " + file);
+                    Update_Event_Progress?.Invoke(null, new MessageResult("File Ignored: " + file));
                 }
             }
         }
@@ -143,11 +143,11 @@ namespace BusinessLogic
                 if (OkToDelete(directory))
                 {
                     File.Delete(Path.Combine(current_install_path, directory));
-                    Update_Event_Progress?.Invoke(null, "Directory deleted: " + directory);
+                    Update_Event_Progress?.Invoke(null, new MessageResult("Directory deleted: " + directory));
                 }
                 else
                 {
-                    Update_Event_Progress?.Invoke(null, "Directory Ignored: " + directory);
+                    Update_Event_Progress?.Invoke(null, new MessageResult("Directory Ignored: " + directory));
                 }
             }
         }

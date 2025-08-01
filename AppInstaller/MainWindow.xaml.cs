@@ -60,7 +60,7 @@ namespace AppInstaller
 
         private bool IsAppInstallerInstalled()
         {
-            return false;
+            return BusinessLogic.WindowsProcess.IsProgramInstalled(AppName);
         }
 
         private void SetFixedWindowSize()

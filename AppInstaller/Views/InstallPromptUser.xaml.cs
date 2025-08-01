@@ -48,7 +48,6 @@ namespace AppInstaller.Views
             GitRepoDownload repoDownload = new GitRepoDownload();
             DirectoryInfo results = repoDownload.RunDownload(SelectedGitUrl.Text.Trim());
             WindowsProcess.OpenFolder(results.FullName);
-            App.AppConfig.SourceDirectoryPath = results.FullName;
             LoadValuesFromAppConfig();
         }
 

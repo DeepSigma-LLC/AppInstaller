@@ -26,16 +26,17 @@ namespace AppInstallerCLI
             switch (CLIarguement)
             {
                 case "--version":
-                    Console.WriteLine($"Version: {AppUtilities.GetAppVersion()}");
+                    Console.WriteLine($"AppInstaller {AppUtilities.GetAppVersion()}");
                     break;
                 case "--path":
                     Console.WriteLine($"Current Directory: {AppUtilities.GetCurrentLocationOfTheAppInstallerApp()}");
                     break;
                 case "--help":
-                    Console.WriteLine("Usage: AppInstaller [--version | --help]");
+                    Console.WriteLine("Usage: AppInstaller [--version | --help | | --path | No Arguement]");
                     Console.WriteLine("--version: Display the version of the application.");
                     Console.WriteLine("--help: Display this help message.");
-                    Console.WriteLine("path: Display the current directory of the application.");
+                    Console.WriteLine("--path: Display the current directory of the application.");
+                    Console.WriteLine("No arguement: Launchs the UI version of the application.");
                     break;
                 default:
                     Console.WriteLine("Invalid argument");

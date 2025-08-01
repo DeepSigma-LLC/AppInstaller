@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace BusinessLogic
 {
     public class AppConfig
-    {
+    { 
         public string IgnoreFileName { get;} = "AppIgnore.txt";
         public string AppNameUsedForValidation { get; set; } = string.Empty;
         public string SourceDirectoryPath { private get; set; } = string.Empty;

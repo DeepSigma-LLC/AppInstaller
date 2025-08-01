@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic;
 
 namespace AppInstallerCLI
 {
@@ -13,7 +14,7 @@ namespace AppInstallerCLI
             try
             {
                 // Attempt to launch the App Installer UI
-                throw new NotImplementedException("App Installer UI launch is not implemented yet.");
+                WindowsProcess.ExecuteCommand();
             }
             catch (Exception ex)
             {

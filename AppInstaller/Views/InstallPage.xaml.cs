@@ -32,11 +32,11 @@ namespace AppInstaller.Views
     /// </summary>
     public sealed partial class InstallPage : Page
     {
-        private Installer installer {  get; set; }
+        private InstallerService installer {  get; set; }
         public InstallPage()
         {
             InitializeComponent();
-            installer = new Installer(App.AppConfig);
+            installer = new InstallerService(App.AppConfig);
 
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
             installer.Progress_Log += UpdateProgress;
@@ -45,30 +45,25 @@ namespace AppInstaller.Views
         private void Main_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateTextAsync();
+            progressBar.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateTextAsync()
         {
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Starting Application Installation... \n", Color.LightGreen);
-
-            if (App.AppConfig.ValidateThatAllAppNamesMatch() == false)
-            {
-                RichEditBoxLogging.AppendColoredText(RichTextBlock, "ERROR: The name of the name of the app you are trying to install does not match our expectations.", Color.Red);
-                return;
-            }
-
-            installer.Run(App.AppConfig.AddVariableToPath);
-
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "Done! ", Color.LightGreen);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "This application will close in 5 seconds and relaunch your target application.", Color.White);
-            progressBar.Visibility = Visibility.Collapsed;
+            installer.RunInstall();
         }
 
-        private void UpdateProgress(object? sender, string msg)
+        private void UpdateProgress(object? sender, MessageResult msg)
         {
-            Color color_white = Color.White;
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, msg, color_white);
-            RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", color_white);
+            if(msg.IsError)
+            {
+                RichEditBoxLogging.AppendColoredText(RichTextBlock, msg.Message ?? string.Empty, Color.Red);
+            }
+            else
+            {
+                RichEditBoxLogging.AppendColoredText(RichTextBlock, msg.Message ?? string.Empty, Color.White);
+                RichEditBoxLogging.AppendColoredText(RichTextBlock, "\n", Color.White);
+            }
         }
     }
 }

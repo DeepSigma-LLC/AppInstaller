@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInstaller", "AppInstaller.csproj", "{1E94C685-692F-4C23-8FE3-0A4107FBE9AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInstallerUI", "AppInstallerUI.csproj", "{1E94C685-692F-4C23-8FE3-0A4107FBE9AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInstallerCLI", "..\AppInstallerCLI\AppInstallerCLI.csproj", "{C33DA89D-EC99-45A1-8786-C6067020E108}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInstaller", "..\AppInstallerCLI\AppInstaller.csproj", "{C33DA89D-EC99-45A1-8786-C6067020E108}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "..\BusinessLogic\BusinessLogic.csproj", "{5C21343E-6C7B-4E97-A35A-41F9F82FAB5C}"
 EndProject
