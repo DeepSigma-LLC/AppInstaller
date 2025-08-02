@@ -30,11 +30,12 @@ else if (args.Length > 0)
 
 if (LaunchUI)
 {
-    CLIInfoController.ShowInfo();
+    Console.WriteLine("Launching App Installer UI...");
     string? UI_arg1 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
     string? UI_arg2 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
     string? UI_arg3 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
     AppUILauncher.LaunchAppUI(UI_arg1, UI_arg2, UI_arg3);
+    CLIInfoController.ShowInfo();
 }
 
 

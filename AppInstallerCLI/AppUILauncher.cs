@@ -14,7 +14,15 @@ namespace AppInstallerCLI
             try
             {
                 // Attempt to launch the App Installer UI
-                //WindowsProcess.ExecuteCommand();
+                string? currentLocation = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
+                if (currentLocation is null) { return; }
+
+                string? UI_Path = Path.GetDirectoryName(currentLocation); //Returns CLI directory path
+                UI_Path = Path.GetDirectoryName(UI_Path); //Returns Base directory path
+                if (UI_Path is null) { return; }
+
+                UI_Path = Path.Combine(UI_Path, "Main", "AppInstallerUI.exe");
+                WindowsProcess.ExecuteExeFileDirectly(UI_Path, string.Empty);
             }
             catch (Exception ex)
             {

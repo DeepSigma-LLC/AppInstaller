@@ -19,7 +19,7 @@ namespace BusinessLogic
         {
             this.config = config;
             this.fileController = new DirectoryFileReplacer();
-            Progress_Log = fileController.Update_Event_Progress;
+            fileController.Progress_Log += OnProgress;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace BusinessLogic
 
             fileController.CopyDirectoryRecursively(source_directory, destination_path);
 
-            if (add_to_enivronment_path_variable == true)
+            if (EnvironmentVariables.DoesPathExist(destination_path) == false && add_to_enivronment_path_variable == true)
             {
                 Progress_Log?.Invoke(null,  new MessageResult("Adding to user environment path..."));
                 EnvironmentVariables.AddToPath(destination_path);
@@ -109,6 +109,12 @@ namespace BusinessLogic
             {
                 Progress_Log?.Invoke(null, new MessageResult($"Directory already exists: {destination_path}"));
             }
+        }
+
+        private void OnProgress(object? sender, MessageResult e)
+        {
+            // Relay or transform the message as needed
+            Progress_Log?.Invoke(this, e);
         }
     }
 }

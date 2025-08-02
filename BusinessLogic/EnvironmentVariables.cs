@@ -29,5 +29,16 @@ namespace BusinessLogic
             }
         }
 
+        public static bool DoesPathExist(string newPath)
+        {
+            const string path_name = "PATH";
+            string? currentPath = Environment.GetEnvironmentVariable(path_name, EnvironmentVariableTarget.User);
+            if (currentPath is not null && currentPath.Contains(newPath) == true)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

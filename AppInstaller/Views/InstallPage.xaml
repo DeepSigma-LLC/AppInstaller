@@ -11,9 +11,14 @@
 
     <StackPanel Padding="15, 0, 15, 0">
         <!--RichEditBox x:Name="textbox_log" Grid.Row="0" FontSize="11" TextWrapping="Wrap" IsSpellCheckEnabled="False" IsEnabled="False"/-->
-        <Border BorderThickness="2" BorderBrush="Gray" Background="Black" CornerRadius="5" Padding="10, 5, 5, 10">
-            <RichTextBlock x:Name="RichTextBlock" Height="300"/>
-        </Border>
+            <RichEditBox x:Name="LogBox"
+             TextWrapping="Wrap"
+             Height="300"
+             Background="Black"
+             Foreground="White"
+             BorderThickness="2"
+             BorderBrush="Gray"
+             Padding="10"/>
         
         <TextBlock/>
         <ProgressBar x:Name="progressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"  HorizontalAlignment="Stretch"/>

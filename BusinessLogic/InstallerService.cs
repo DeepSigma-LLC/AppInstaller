@@ -17,6 +17,8 @@ namespace BusinessLogic
         {
             this.appConfig = appConfig;
             this.installer = new Installer(appConfig);
+
+            installer.Progress_Log += OnProgress;
         }
 
         public void RunInstall()
@@ -30,7 +32,7 @@ namespace BusinessLogic
             }
 
             Progress_Log?.Invoke(null, new MessageResult("Checking for Main Installation... \n"));
-            if (appConfig.GetSourceDirectory() is null)
+            if (appConfig.GetSourceDirectory() is not null)
             {
                 Progress_Log?.Invoke(null, new MessageResult("Starting Main Installation... \n"));
                 installer.Run(InstallType.Main, false); //Always false.
@@ -45,6 +47,12 @@ namespace BusinessLogic
            
             Progress_Log?.Invoke(null, new MessageResult("Done! "));
             Progress_Log?.Invoke(null, new MessageResult("This application will close in 5 seconds and relaunch your target application."));
+        }
+
+        private void OnProgress(object? sender, MessageResult e)
+        {
+            // Relay or transform the message as needed
+            Progress_Log?.Invoke(this, e);
         }
 
     }

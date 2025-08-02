@@ -59,25 +59,24 @@ namespace AppInstaller
 
             string[] commandArgs = Environment.GetCommandLineArgs();
 
-
             if (commandArgs.Length >= 1)
             {
-                AppConfig.AppNameToInstall = commandArgs[1];
+                AppConfig.AppNameToInstall = commandArgs[0];
             }
             
             if(commandArgs.Length >= 2)
             {
-                AppConfig.SourceDirectoryPath = commandArgs[2];
+                AppConfig.SourceDirectoryPath = commandArgs[1];
+            }
+
+            if (commandArgs.Length >= 3)
+            {
+                AppConfig.TargetInstallLocation = commandArgs[2];
             }
 
             if (commandArgs.Length >= 4)
             {
-                AppConfig.TargetInstallLocation = commandArgs[3];
-            }
-
-            if (commandArgs.Length >= 5)
-            {
-                AppConfig.SourceCLIDirectoryPath = commandArgs[4];
+                AppConfig.SourceCLIDirectoryPath = commandArgs[3];
             }
         }
 

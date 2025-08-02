@@ -25,7 +25,7 @@ namespace BusinessLogic
         public static string GetAppVersion()
         {
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            return "Version: " + version?.ToString() ?? "Unknown";
+            return version?.ToString() ?? "Unknown";
         }
     }
 }

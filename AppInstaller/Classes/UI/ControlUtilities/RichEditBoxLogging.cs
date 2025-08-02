@@ -13,19 +13,30 @@ namespace AppInstaller.Classes.UI.ControlUtilities
     {
         internal static void AppendColoredText(RichEditBox box, string text, System.Drawing.Color color)
         {
-            // Move selection to the end
-            box.Document.GetText(Microsoft.UI.Text.TextGetOptions.None, out string existingText);
-            int length = existingText.Length;
-
-            // Set selection at end of document
             var doc = box.Document;
-            doc.Selection.SetRange(length, length);
+
+            // Move selection to end of document
+            doc.GetText(Microsoft.UI.Text.TextGetOptions.None, out string existingText);
+            int end = existingText.Length;
+            doc.Selection.SetRange(end, end); // collapse selection
+
+            // SAFELY get and apply format
+            var format = doc.Selection.CharacterFormat;
+            var safeColor = ConvertColor(color);
+
+            // This avoids UnauthorizedAccessException
+            if (format != null)
+            {
+                format.ForegroundColor = safeColor;
+                format.Bold = Microsoft.UI.Text.FormatEffect.Off;
+            }
 
             // Insert text
             doc.Selection.Text = text;
 
-            // Apply color format to just-inserted text
-            doc.Selection.CharacterFormat.ForegroundColor = ConvertColor(color);
+            // Move caret to end
+            int newEnd = doc.Selection.EndPosition;
+            doc.Selection.SetRange(newEnd, newEnd);
         }
 
         internal static void AppendColoredText(RichTextBlock block, string text, System.Drawing.Color color)

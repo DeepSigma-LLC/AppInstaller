@@ -60,6 +60,18 @@ namespace BusinessLogic
             }
         }
 
+        public static void ExecuteExeFileDirectly(string ExeFilePath, string Arguements)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = ExeFilePath,
+                Arguments = Arguements,
+                WorkingDirectory = Path.GetDirectoryName(ExeFilePath)!,
+                UseShellExecute = true
+            };
+            System.Diagnostics.Process.Start(psi);
+        }
+
 
         /// <summary>
         /// Determine if a program is installed by looking for a valid version response from the terminal.
@@ -81,12 +93,13 @@ namespace BusinessLogic
             {
                 if (process is null) return false;
 
-                string output = process.StandardOutput.ReadToEnd();
+                string output = process.StandardOutput.ReadToEnd().ToLower();
                 process.WaitForExit();
+                if (string.IsNullOrEmpty(output)) { return false; }
 
-                foreach(string error in GetErrorResponses())
+                foreach (string error in GetErrorResponses())
                 {
-                    if (output.Contains(error))
+                    if (output.Contains(error.ToLower()))
                     {
                         return false;
                     }
@@ -135,7 +148,7 @@ namespace BusinessLogic
         /// <returns></returns>
         private static string[] GetErrorResponses()
         {
-            return ["error", "not recognized", "not found", "exception"];
+            return ["error", "not recognized", "not found", "exception", "invalid"];
         }
     }
 }

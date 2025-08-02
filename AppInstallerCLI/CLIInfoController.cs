@@ -26,7 +26,7 @@ namespace AppInstallerCLI
             switch (CLIarguement)
             {
                 case "--version":
-                    Console.WriteLine($"AppInstaller {AppUtilities.GetAppVersion()}");
+                    Console.WriteLine($"AppInstaller Version: {AppUtilities.GetAppVersion()}");
                     break;
                 case "--path":
                     Console.WriteLine($"Current Directory: {AppUtilities.GetCurrentLocationOfTheAppInstallerApp()}");

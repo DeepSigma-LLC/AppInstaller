@@ -52,7 +52,7 @@ namespace AppInstaller
             }
             else if(App.AppConfig.IsInstallLocationNeeded() == true)
             {
-                contentFrame.Navigate(typeof(Views.FirstTimeLaunchPage));
+                contentFrame.Navigate(typeof(Views.InstallPromptUser));
                 return;
             }
             contentFrame.Navigate(typeof(Views.InstallPage));

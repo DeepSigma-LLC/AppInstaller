@@ -86,10 +86,9 @@ namespace BusinessLogic
             return GetSourceDirecoryAdjustedForVersioning(SourceCLIDirectoryPath);
         }
 
-        private string? GetSourceDirecoryAdjustedForVersioning(string directory)
+        private string? GetSourceDirecoryAdjustedForVersioning(string? source_directory)
         {
-            string? source_directory = directory;
-            if (String.IsNullOrEmpty(source_directory)) return null;
+            if (String.IsNullOrEmpty(source_directory)) { return null; }
 
             string? LatestVersionDirectory = TryGetLatestVersionDirectory();
             if (LatestVersionDirectory is not null && DoesSourceDirectoryContainVersioningDirectories() == true)
