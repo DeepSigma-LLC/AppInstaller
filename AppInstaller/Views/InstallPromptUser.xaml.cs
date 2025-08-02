@@ -39,8 +39,7 @@ namespace AppInstaller.Views
         {
             textbox_source_directory.Text = App.AppConfig.GetSourceDirectory() ?? String.Empty;
             textbox_selectedFilePath.Text = App.AppConfig.TargetInstallLocation;
-            textbox_appName.Text = App.AppConfig.GetAppNameToInstall();
-
+            textbox_appName.Text = App.AppConfig.AppNameToInstall;
         }
 
         private void Git_Repo_Download_Click(object sender, RoutedEventArgs e)

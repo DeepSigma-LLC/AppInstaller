@@ -14,7 +14,7 @@ namespace AppInstallerCLI
             try
             {
                 // Attempt to launch the App Installer UI
-                WindowsProcess.ExecuteCommand();
+                //WindowsProcess.ExecuteCommand();
             }
             catch (Exception ex)
             {

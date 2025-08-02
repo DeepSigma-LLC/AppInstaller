@@ -12,20 +12,33 @@
         <StackPanel Padding="15, 0, 15, 0">
             <TextBlock Text="Welcome!" HorizontalAlignment="Center" FontSize="28" Padding="0, 0, 0 ,10"/>
             <TextBlock Text="Please proceed with the installation of the App Installer." HorizontalAlignment="Center" Padding="0, 0, 0, 20"/>
+            <TextBlock Text="Source CLI Location:" Padding="0, 0, 0, 5"></TextBlock>
 
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="SelectedInstallLocation" Grid.Column="0" PlaceholderText="Selected Install Location"  Text="{Binding recommended_install_path}"/>
+                <TextBox Grid.Column="0" x:Name="SelectedCLILocation" PlaceholderText="Selected CLI Location"/>
                 <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
-                <Button Grid.Column="2" Content="Select Location" Click="Select_Folder_Location_Button_Click"/>
+                <Button Grid.Column="2" Content="Select Directory" Click="Select_Folder_CLI_Location_Button_Click"/>
+            </Grid>
+
+            <TextBlock/>
+
+            <TextBlock Text="Target Install Location:" Padding="0, 0, 0, 5"></TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SelectedInstallLocation" Grid.Column="0"  PlaceholderText="Selected Install Location"  Text="{Binding recommended_install_path}"/>
+                <TextBlock Grid.Column="1" Padding="5,0,0,0"/>
+                <Button Grid.Column="2" Content="Select Directory" Click="Select_Folder_Location_Button_Click"/>
             </Grid>
 
             <TextBlock/>

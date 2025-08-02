@@ -11,12 +11,12 @@
 
     <ScrollViewer>
         <StackPanel Padding="20, 0, 20 ,0">
-            <TextBlock Text="Application Name:" Padding="0, 10, 0, 10"/>
-            <TextBox x:Name="textbox_appName"  PlaceholderText="Application Name" IsEnabled="False"/>
+            <TextBox x:Name="textbox_appName" Header="Application Name:" PlaceholderText="Application Name" IsEnabled="False"/>
             <TextBlock FontSize="5"/>
-            <TextBlock Text="Source Location:" Padding="0, 15, 0, 10"/>
-            <TextBox x:Name="textbox_source_directory" PlaceholderText="Source Directory Location" IsEnabled="False"/>
-            <TextBlock Text="Target Install Location:" Padding="0, 15, 0, 10"/>
+            <TextBox x:Name="textbox_source_directory"  Header="Main Source Location:"  PlaceholderText="Source Directory Location" IsEnabled="False"/>
+            <TextBlock FontSize="5"/>
+            <TextBox x:Name="textbox_CLI_source_directory"  Header="CLI Source Location:"  PlaceholderText="CLI Source Directory Location" IsEnabled="False"/>
+            <TextBlock Text="Target Install Location:" Padding="0, 15, 0, 5"/>
 
             <Grid>
                 <Grid.ColumnDefinitions>

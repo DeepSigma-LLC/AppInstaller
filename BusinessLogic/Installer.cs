@@ -25,11 +25,11 @@ namespace BusinessLogic
         /// <summary>
         /// Runs the file update program. 
         /// </summary>
-        internal void Run(bool add_to_enivronment_path_variable = false)
+        internal void Run(InstallType installType, bool add_to_enivronment_path_variable = false)
         {
-            if (String.IsNullOrEmpty(config.GetAppNameToInstall())) return;
+            if (String.IsNullOrEmpty(config.AppNameToInstall)) return;
 
-            string? app_name = config.GetAppNameToInstall();
+            string? app_name = config.AppNameToInstall;
 
             Progress_Log?.Invoke(null, new MessageResult("Validating app name..."));
             if (app_name is null)
@@ -38,7 +38,7 @@ namespace BusinessLogic
                 return;
             }
 
-            string? source_directory = config.GetSourceDirectory();
+            string? source_directory = GetSourceDirectory(installType);
             Progress_Log?.Invoke(null, new MessageResult("Validating source directory..."));
             if (source_directory is null)
             {
@@ -52,7 +52,7 @@ namespace BusinessLogic
             fileController.SetFilters(filters);
 
             Progress_Log?.Invoke(null, new MessageResult("Checking if directory has been created..."));
-            string destination_path = Path.Combine(config.TargetInstallLocation, app_name);
+            string destination_path = GetTargetDirectory(installType, app_name);
             CreateDirectoryIfNeeded(destination_path);
 
             Progress_Log?.Invoke(null, new MessageResult("Starting directory clean up..."));
@@ -72,6 +72,31 @@ namespace BusinessLogic
             Progress_Log?.Invoke(null, new MessageResult("Installation is now complete!"));
         }
 
+        private string GetTargetDirectory(InstallType installType, string app_name)
+        {
+            switch(installType)
+            {
+                case InstallType.Main:
+                    return Path.Combine(config.TargetInstallLocation, app_name, "Main");
+                case InstallType.CLI:
+                    return Path.Combine(config.TargetInstallLocation, app_name, "CLI");
+                default:
+                    throw new NotSupportedException("Install type not supported.");
+            }
+        }
+
+        private string? GetSourceDirectory(InstallType installType)
+        {
+            switch (installType)
+            {
+                case InstallType.Main:
+                    return config.GetSourceDirectory();
+                case InstallType.CLI:
+                    return config.GetSourceCLIDirectory();
+                default:
+                    throw new NotSupportedException("Install type not supported.");
+            }
+        }
 
         private void CreateDirectoryIfNeeded(string destination_path)
         {

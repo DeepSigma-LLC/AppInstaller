@@ -54,39 +54,32 @@ namespace AppInstaller
             StoreInstalledAppPathPassedAsArgument(args);
         }
 
-
-
         private void StoreInstalledAppPathPassedAsArgument(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
 
             string[] commandArgs = Environment.GetCommandLineArgs();
 
-            if (commandArgs.Length == 2 && commandArgs[1].Trim().ToLower() == "--version") // args[0] is the executable path
-            {
-                AllocConsole();
-                Console.WriteLine(AppUtilities.GetAppVersion());
-                Console.Out.Flush();
-                AppUtilities.ExitApp();
-            }
 
-            if (commandArgs.Length >= 2) // args[0] is the executable path
+            if (commandArgs.Length >= 1)
             {
-                AppConfig.AppNameUsedForValidation = commandArgs[1];
+                AppConfig.AppNameToInstall = commandArgs[1];
             }
             
-            if(commandArgs.Length >= 3)
+            if(commandArgs.Length >= 2)
             {
                 AppConfig.SourceDirectoryPath = commandArgs[2];
             }
 
-            if (commandArgs.Length >= 4) // args[0] is the executable path
+            if (commandArgs.Length >= 4)
             {
                 AppConfig.TargetInstallLocation = commandArgs[3];
             }
+
+            if (commandArgs.Length >= 5)
+            {
+                AppConfig.SourceCLIDirectoryPath = commandArgs[4];
+            }
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
     }
 }

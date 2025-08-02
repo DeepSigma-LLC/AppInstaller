@@ -11,35 +11,13 @@ using System.Threading.Tasks;
 namespace BusinessLogic
 {
     public class AppConfig
-    { 
+    {
         public string IgnoreFileName { get;} = "AppIgnore.txt";
-        public string AppNameUsedForValidation { get; set; } = string.Empty;
-        public string SourceDirectoryPath { private get; set; } = string.Empty;
+        public string AppNameToInstall { get; set; } = string.Empty;
+        public string? SourceDirectoryPath { private get; set; } = null;
+        public string SourceCLIDirectoryPath { private get; set; } = string.Empty;
         public string TargetInstallLocation { get; set; } = string.Empty;
         public bool AddVariableToPath { get; set; } = false;
-
-
-        /// <summary>
-        /// Gets the raw app name from the .exe file with the extension removed from the source directory.
-        /// </summary>
-        /// <returns></returns>
-        public string? GetAppNameToInstall()
-        {
-            string? file_name = GetAppExeFileNameToInstall();
-            if (file_name is null) return null;
-            return file_name.Replace(".exe", "");
-        }
-
-        /// <summary>
-        /// Gets the application .exe file name with extension still attached from the source directory.
-        /// </summary>
-        /// <returns></returns>
-        public string? GetAppExeFileNameToInstall()
-        {
-            string? SourceDirectory = GetSourceDirectory();
-            if (SourceDirectory is null) return null;
-            return GetExeFileNameFromLocation(SourceDirectory);
-        }
 
         /// <summary>
         /// Determines if the target install location is needed.
@@ -57,18 +35,19 @@ namespace BusinessLogic
         /// <returns></returns>
         public bool ValidateThatAllAppNamesMatch()
         {
-            if (string.IsNullOrEmpty(AppNameUsedForValidation))
-            {
+            if (string.IsNullOrEmpty(AppNameToInstall)) {
                 return false;
             }
-            bool NewAppNameIsValid = GetAppNameToInstall() == AppNameUsedForValidation;
 
             bool OddAppNameIdValid = true;
             if (IsAppUpdate())
             {
-                OddAppNameIdValid = GetAppExeFileNameAlreadyInstalled() == AppNameUsedForValidation;
+                string[] exe_files = GetAppExeFileNameAlreadyInstalled();
+                if(exe_files.Where(x => x == AppNameToInstall+".exe").Count() == 0) {
+                    OddAppNameIdValid = false;
+                }
             }
-            return NewAppNameIsValid && OddAppNameIdValid;
+            return OddAppNameIdValid;
         }
 
         /// <summary>
@@ -79,8 +58,9 @@ namespace BusinessLogic
         {
             if (Directory.Exists(TargetInstallLocation) == false) return false;
 
-            string? file_name = GetExeFileNameFromLocation(TargetInstallLocation);
-            return !string.IsNullOrEmpty(file_name);
+            string[] exe_files = GetAppExeFileNameAlreadyInstalled();
+            if (exe_files.Length == 0) return false;
+            return true;
         }
 
         /// <summary>
@@ -91,8 +71,25 @@ namespace BusinessLogic
         /// <returns></returns>
         public string? GetSourceDirectory()
         {
-            string? source_directory = SourceDirectoryPath;
-            if(String.IsNullOrEmpty(source_directory)) return null;
+            if (SourceDirectoryPath is null) { return null; }
+            return GetSourceDirecoryAdjustedForVersioning(SourceDirectoryPath);
+        }
+
+        /// <summary>
+        /// Gets the application file source directory and is able to handle directories that contain versioned sub directories.
+        /// For example, if the source directory is a folder containing versions of the application in folders using the format "#_#_#_#" 
+        /// this function will return the path to the directory with the greatest version iteration.
+        /// </summary>
+        /// <returns></returns>
+        public string? GetSourceCLIDirectory()
+        {
+            return GetSourceDirecoryAdjustedForVersioning(SourceCLIDirectoryPath);
+        }
+
+        private string? GetSourceDirecoryAdjustedForVersioning(string directory)
+        {
+            string? source_directory = directory;
+            if (String.IsNullOrEmpty(source_directory)) return null;
 
             string? LatestVersionDirectory = TryGetLatestVersionDirectory();
             if (LatestVersionDirectory is not null && DoesSourceDirectoryContainVersioningDirectories() == true)
@@ -129,10 +126,11 @@ namespace BusinessLogic
         /// Returns the application .exe file that is already installed on your PC if it exists in the target directoy location.
         /// </summary>
         /// <returns></returns>
-        private string? GetAppExeFileNameAlreadyInstalled()
+        private string[] GetAppExeFileNameAlreadyInstalled()
         {
-            if (TargetInstallLocation is null) return null;
-            return GetExeFileNameFromLocation(TargetInstallLocation);
+            if (TargetInstallLocation is null) return [];
+            string[] exeFiles = GetExeFileNamesFromLocation(TargetInstallLocation);
+            return GetExeFileNamesFromLocation(TargetInstallLocation);
         }
 
         /// <summary>
@@ -141,18 +139,19 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="directory_path"></param>
         /// <returns></returns>
-        private string? GetExeFileNameFromLocation(string directory_path)
+        private string[] GetExeFileNamesFromLocation(string directory_path)
         {
-            if (Directory.Exists(directory_path) == false) return null;
+            List<string> results = [];
+            if (Directory.Exists(directory_path) == false) return [];
 
             foreach (string file in Directory.GetFiles(directory_path))
             {
                 if (file.EndsWith(".exe"))
                 {
-                    return Path.GetFileName(file);
+                    results.Add(Path.GetFileName(file));
                 }
             }
-            return null;
+            return results.ToArray();
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using AppInstallerUI.Classes;
 
 namespace AppInstaller.Classes.UI.ControlUtilities
 {
@@ -24,7 +25,11 @@ namespace AppInstaller.Classes.UI.ControlUtilities
         {
             if (filters is null) filters = ["*"]; //Initialize to empty list if not set
 
-            sender.IsEnabled = false; // since async
+            await window.DispatcherQueue.EnqueueAsync(() =>
+            {
+                sender.IsEnabled = false;
+            });
+
             var openPicker = new Windows.Storage.Pickers.FolderPicker();
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
@@ -49,8 +54,10 @@ namespace AppInstaller.Classes.UI.ControlUtilities
                 ErrorMessagingEvent?.Invoke(null, "Operation cancelled.");
             }
 
-            //reenable the button
-            sender.IsEnabled = true;
+            await sender.DispatcherQueue.EnqueueAsync(() =>
+            {
+                sender.IsEnabled = true;
+            });
             return result;
         }
 

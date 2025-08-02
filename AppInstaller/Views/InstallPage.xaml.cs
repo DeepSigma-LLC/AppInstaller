@@ -51,6 +51,15 @@ namespace AppInstaller.Views
         private void UpdateTextAsync()
         {
             installer.RunInstall();
+
+            // Also, install UI Version
+            string? source_directory = App.AppConfig.GetSourceDirectory();
+            if (source_directory is not null)
+            {
+                App.AppConfig.AddVariableToPath = false;
+                App.AppConfig.SourceDirectoryPath = source_directory;
+                installer.RunInstall();
+            }
         }
 
         private void UpdateProgress(object? sender, MessageResult msg)

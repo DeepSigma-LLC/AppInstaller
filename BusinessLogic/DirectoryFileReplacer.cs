@@ -126,7 +126,7 @@ namespace BusinessLogic
                 }
                 else
                 {
-                    Update_Event_Progress?.Invoke(null, new MessageResult("File Ignored: " + file));
+                    Update_Event_Progress?.Invoke(null, new MessageResult("File ignored: " + file));
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace BusinessLogic
                 }
                 else
                 {
-                    Update_Event_Progress?.Invoke(null, new MessageResult("Directory Ignored: " + directory));
+                    Update_Event_Progress?.Invoke(null, new MessageResult("Directory ignored: " + directory));
                 }
             }
         }

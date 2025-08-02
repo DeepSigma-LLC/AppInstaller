@@ -38,18 +38,44 @@ namespace AppInstaller.Views
 
         private async void Install_Button_Click(object sender, RoutedEventArgs e)
         {
+
+            string cli_directory = SelectedCLILocation.Text.Trim();
             string install_folder = SelectedInstallLocation.Text.Trim();
+            bool valid_directories = await ValidateDirectories(cli_directory, install_folder);
+            if (!valid_directories) {return;}
+
+            App.AppConfig.SourceCLIDirectoryPath = cli_directory;
+            App.AppConfig.SourceDirectoryPath = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
+            App.AppConfig.TargetInstallLocation = install_folder;
+            App.AppConfig.AppNameToInstall = App.NameWithoutSpaces;
+            App.AppConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
+            this.Frame.Navigate(typeof(InstallPage));
+        }
+
+        private async System.Threading.Tasks.Task<bool> ValidateDirectories(string cli_directory, string install_folder)
+        {
+            if (Directory.Exists(cli_directory) == false)
+            {
+                await MessageBox.ShowDialogAsync(this, "Invalid CLI Folder Location Selected.", "OK");
+                return false;
+            }
+
             if (Directory.Exists(install_folder) == false)
             {
                 await MessageBox.ShowDialogAsync(this, "Invalid Install Location Selected.", "OK");
-                return;
+                return false;
             }
 
-            App.AppConfig.SourceDirectoryPath = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
-            App.AppConfig.TargetInstallLocation = install_folder;
-            App.AppConfig.AppNameUsedForValidation = App.NameWithoutSpaces;
-            App.AppConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
-            this.Frame.Navigate(typeof(InstallPage));
+            return true;
+        }
+
+        private async void Select_Folder_CLI_Location_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.MyWindow is not null)
+            {
+                string? selectedFolder = await folderSelector.SelectFolderAsync(App.MyWindow, (Button)sender);
+                SelectedCLILocation.Text = selectedFolder ?? String.Empty;
+            }
         }
 
         private async void Select_Folder_Location_Button_Click(object sender, RoutedEventArgs e)
