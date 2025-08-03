@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using BusinessLogic;
+using BusinessLogic.Install;
+using Microsoft.Extensions.Configuration;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -17,7 +20,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using BusinessLogic;
 using Windows.Foundation.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -30,10 +32,9 @@ namespace AppInstaller
     /// </summary>
     public partial class App : Application
     {
-        public static string Name { get; } = "App Installer";
-        public static string NameWithoutSpaces { get; } = Name.Replace(" ", String.Empty);
-        public static AppConfig AppConfig { get; } = new();
+        public static InstallConfig InstallConfig { get; } = new();
         public static MainWindow? MyWindow { get; private set; }
+        public static AppSettings AppSettings { get; } = new();
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -41,6 +42,14 @@ namespace AppInstaller
         public App()
         {
             InitializeComponent();
+            // Set up configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppUtilities.GetCurrentLocationOfTheAppInstallerApp())
+                .AddJsonFile("config.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            config.GetSection("AppSettings").Bind(AppSettings);
+
         }
 
         /// <summary>
@@ -73,20 +82,20 @@ namespace AppInstaller
             switch (key.ToLower())
             {
                 case "app":
-                    AppConfig.AppNameToInstall = value;
+                    InstallConfig.AppNameToInstall = value;
                     break;
                 case "source":
-                    AppConfig.SourceDirectoryPath = value;
+                    InstallConfig.SourceDirectoryPath = value;
                     break;
                 case "target":
-                    AppConfig.TargetInstallLocation = value;
+                    InstallConfig.TargetInstallLocation = value;
                     break;
                 case "clisource":
-                    AppConfig.SourceCLIDirectoryPath = value;
+                    InstallConfig.SourceCLIDirectoryPath = value;
                     break;
                 case "auto":
                     bool successfullyParsed = bool.TryParse(value, out bool result);
-                    if (successfullyParsed) {AppConfig.AutoInstall = result; }
+                    if (successfullyParsed) {InstallConfig.AutoInstall = result; }
                     break;
                 default:
                     break;

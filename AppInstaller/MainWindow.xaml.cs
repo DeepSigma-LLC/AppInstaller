@@ -30,7 +30,7 @@ namespace AppInstaller
     public sealed partial class MainWindow : Window
     {
         public string VersionText { get; set; }
-        public string AppName => App.Name;
+        public string AppName => App.AppSettings.AppName;
         public MainWindow()
         {
             InitializeComponent();
@@ -48,7 +48,7 @@ namespace AppInstaller
                 contentFrame.Navigate(typeof(Views.FirstTimeLaunchPage));
                 return;
             }
-            else if(App.AppConfig.OkToAutoInstall())
+            else if(App.InstallConfig.OkToAutoInstall())
             {
                 contentFrame.Navigate(typeof(Views.InstallPage));
                 return;
@@ -59,7 +59,7 @@ namespace AppInstaller
         private bool IsAppInstallerInstalled()
         {
 
-            return BusinessLogic.WindowsProcess.IsProgramInstalled(App.NameWithoutSpaces);
+            return BusinessLogic.WindowsProcess.IsProgramInstalled(App.AppSettings.GetAppNameWithoutSpaces());
         }
 
         private void SetFixedWindowSize()

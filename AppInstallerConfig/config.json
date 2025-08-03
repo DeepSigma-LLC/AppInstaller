@@ -1,8 +1,7 @@
 {
   "AppSettings": {
     "AppName": "App Installer",
-    "AppAuthor": "DeepSigma LLC",
-    "AppDescription": "A simple application installer for applications.",
+    "Company": "DeepSigma LLC",
     "MainDirectory": "Main",
     "CLIDirectory":  "CLI"
   },

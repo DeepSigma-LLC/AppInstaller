@@ -11,13 +11,15 @@ namespace BusinessLogic.Install
 {
     internal class Installer
     {
-        private AppConfig config { get; set; }
+        private InstallConfig config { get; set; }
         private DirectoryFileReplacer fileController { get; set; }
         private IProgressMessenger? messenger { get; set; }
-        internal Installer(AppConfig config, IProgressMessenger? messenger = null)
+        private AppSettings appSettings { get; set; }
+        internal Installer(InstallConfig config, AppSettings appSettings, IProgressMessenger? messenger = null)
         {
             this.config = config;
             this.messenger = messenger;
+            this.appSettings = appSettings;
             fileController = new DirectoryFileReplacer(messenger);
         }
 
@@ -75,9 +77,9 @@ namespace BusinessLogic.Install
             switch(installType)
             {
                 case InstallType.Main:
-                    return Path.Combine(config.TargetInstallLocation, app_name, "Main");
+                    return Path.Combine(config.TargetInstallLocation, app_name, appSettings.MainDirectory);
                 case InstallType.CLI:
-                    return Path.Combine(config.TargetInstallLocation, app_name, "CLI");
+                    return Path.Combine(config.TargetInstallLocation, app_name, appSettings.CLIDirectory);
                 default:
                     throw new NotSupportedException("Install type not supported.");
             }

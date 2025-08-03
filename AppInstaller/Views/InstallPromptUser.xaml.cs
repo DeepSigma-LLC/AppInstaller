@@ -37,10 +37,10 @@ namespace AppInstaller.Views
 
         private void LoadValuesFromAppConfig()
         {
-            textbox_appName.Text = App.AppConfig.AppNameToInstall;
-            textbox_source_directory.Text = App.AppConfig.GetSourceDirectory() ?? String.Empty;
-            textbox_CLI_source_directory.Text = App.AppConfig.GetSourceCLIDirectory() ?? String.Empty;
-            textbox_selectedFilePath.Text = App.AppConfig.TargetInstallLocation;
+            textbox_appName.Text = App.InstallConfig.AppNameToInstall;
+            textbox_source_directory.Text = App.InstallConfig.GetSourceDirectory() ?? String.Empty;
+            textbox_CLI_source_directory.Text = App.InstallConfig.GetSourceCLIDirectory() ?? String.Empty;
+            textbox_selectedFilePath.Text = App.InstallConfig.TargetInstallLocation;
         }
 
         private void Git_Repo_Download_Click(object sender, RoutedEventArgs e)
@@ -69,14 +69,14 @@ namespace AppInstaller.Views
 
         private bool IsInstallPathValid()
         {
-            string selectedPath = App.AppConfig.TargetInstallLocation;
+            string selectedPath = App.InstallConfig.TargetInstallLocation;
             bool isPathValid = Directory.Exists(selectedPath);
 
             if (isPathValid == false)
             {
                 return false;
             }
-            else if (App.AppConfig.IsAppUpdate())
+            else if (App.InstallConfig.IsAppUpdate())
             {
                 return isPathValid;
             }
@@ -95,7 +95,7 @@ namespace AppInstaller.Views
             if(App.MyWindow is not null)
             {
                 selectedInstallLocation = await fileSelector.SelectFolderAsync(App.MyWindow, (Button)sender);
-                App.AppConfig.TargetInstallLocation = selectedInstallLocation ?? String.Empty;
+                App.InstallConfig.TargetInstallLocation = selectedInstallLocation ?? String.Empty;
             }
             LoadValuesFromAppConfig();
         }

@@ -8,9 +8,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic
+namespace BusinessLogic.Install
 {
-    public class AppConfig
+    public class InstallConfig
     {
         public string IgnoreFileName { get;} = "AppIgnore.txt";
         public string AppNameToInstall { get; set; } = string.Empty;
@@ -19,7 +19,6 @@ namespace BusinessLogic
         public string TargetInstallLocation { get; set; } = string.Empty;
         public bool AddVariableToPath { get; set; } = false;
         public bool AutoInstall { get; set; } = false;
-
 
         /// <summary>
         /// Determines if the target install location is needed.
@@ -99,7 +98,7 @@ namespace BusinessLogic
 
         private string? GetSourceDirecoryAdjustedForVersioning(string? source_directory)
         {
-            if (String.IsNullOrEmpty(source_directory)) { return null; }
+            if (string.IsNullOrEmpty(source_directory)) { return null; }
 
             string? LatestVersionDirectory = TryGetLatestVersionDirectory();
             if (LatestVersionDirectory is not null && DoesSourceDirectoryContainVersioningDirectories() == true)
@@ -116,7 +115,7 @@ namespace BusinessLogic
         private bool DoesSourceDirectoryContainVersioningDirectories()
         {
             string? max_version = TryGetLatestVersionDirectory();
-            return !String.IsNullOrEmpty(max_version);
+            return !string.IsNullOrEmpty(max_version);
         }
 
         /// <summary>

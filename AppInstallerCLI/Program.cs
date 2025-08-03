@@ -2,6 +2,19 @@
 // Program.cs
 using AppInstallerCLI;
 using BusinessLogic;
+using Microsoft.Extensions.Configuration;
+
+
+// Set up configuration
+AppSettings settings = new();
+var config = new ConfigurationBuilder()
+    .SetBasePath(AppUtilities.GetCurrentLocationOfTheAppInstallerApp())
+    .AddJsonFile("config.json", optional: false, reloadOnChange: true)
+    .Build();
+config.GetSection("AppSettings").Bind(settings);
+
+CLIInfoController cLIInfo = new(settings);
+
 
 bool LaunchUI = false;
 List<string> UI_arguements = [];
@@ -17,7 +30,7 @@ else if (args.Length > 0)
         string value = arg.Trim();
         if (arg.StartsWith("--"))
         {
-            CLIInfoController.InterfaceRequest(value);
+            cLIInfo.InterfaceRequest(value);
         }
         else
         {
@@ -30,11 +43,13 @@ else if (args.Length > 0)
 
 if (LaunchUI)
 {
-    Console.WriteLine("Launching App Installer UI...");
-    Console.WriteLine($"Arguements: {string.Join(", ", UI_arguements)}");
+    Console.WriteLine($"Launching {settings.AppName} UI...");
+    Console.WriteLine($"Arguments: {string.Join(", ", UI_arguements)}");
+
     string arg_text = string.Join(" ", UI_arguements);
-    AppUILauncher.LaunchAppUI(arg_text);
-    CLIInfoController.ShowInfo();
+    AppUILauncher appUI = new(settings);
+    appUI.LaunchAppUI(arg_text);
+    cLIInfo.ShowInfo();
     AppUtilities.ExitApp();
 }
 

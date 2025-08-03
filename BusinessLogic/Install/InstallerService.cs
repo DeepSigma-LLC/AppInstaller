@@ -10,20 +10,20 @@ namespace BusinessLogic.Install
 {
     public class InstallerService
     {
-        private AppConfig appConfig { get; set; }
+        private InstallConfig installConfig { get; set; }
         private Installer installer { get; set; }
         private IProgressMessenger? messenger { get; } = null;
-        public InstallerService(AppConfig appConfig, IProgressMessenger? messenger = null)
+        public InstallerService(InstallConfig installConfig,AppSettings appSettings, IProgressMessenger? messenger = null)
         {
-            this.appConfig = appConfig;
+            this.installConfig = installConfig;
             this.messenger = messenger;
-            installer = new Installer(appConfig, messenger);
+            installer = new Installer(installConfig, appSettings, messenger);
         }
 
         public async Task RunInstallAsync()
         {
             await (messenger?.PostMessageAsync(new MessageResult("Starting Application Installation... \n", MessageResultType.Success)) ?? Task.CompletedTask);
-            if (appConfig.ValidateThatAllAppNamesMatch() == false)
+            if (installConfig.ValidateThatAllAppNamesMatch() == false)
             {
                 await (messenger?.PostMessageAsync(new MessageResult("ERROR: The name of the name of the app you are trying to install does not match our expectations.", MessageResultType.Error)) ?? Task.CompletedTask);
                 return;
@@ -32,7 +32,7 @@ namespace BusinessLogic.Install
             await (messenger?.PostMessageAsync(new MessageResult("\n\n")) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("///////////////////////////////", MessageResultType.Success)) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("Checking for Main Installation...")) ?? Task.CompletedTask);
-            if (appConfig.GetSourceDirectory() is not null)
+            if (installConfig.GetSourceDirectory() is not null)
             {
                 await (messenger?.PostMessageAsync(new MessageResult("Starting Main Installation...")) ?? Task.CompletedTask);
                 await installer.Run(InstallType.Main, false).ConfigureAwait(false); //Always false.
@@ -41,10 +41,10 @@ namespace BusinessLogic.Install
             await (messenger?.PostMessageAsync(new MessageResult("\n\n")) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("///////////////////////////////", MessageResultType.Success)) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("Checking for CLI Installation...")) ?? Task.CompletedTask);
-            if (appConfig.GetSourceCLIDirectory() is not null)
+            if (installConfig.GetSourceCLIDirectory() is not null)
             {
                 await (messenger?.PostMessageAsync(new MessageResult("Starting CLI Installation...")) ?? Task.CompletedTask);
-                await installer.Run(InstallType.CLI, appConfig.AddVariableToPath).ConfigureAwait(false);
+                await installer.Run(InstallType.CLI, installConfig.AddVariableToPath).ConfigureAwait(false);
             }
 
             await (messenger?.PostMessageAsync(new MessageResult("Done! \n", MessageResultType.Success)) ?? Task.CompletedTask);

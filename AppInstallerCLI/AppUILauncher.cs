@@ -7,9 +7,14 @@ using BusinessLogic;
 
 namespace AppInstallerCLI
 {
-    internal static class AppUILauncher
+    internal class AppUILauncher
     {
-        internal static void LaunchAppUI(string? arguments)
+        private readonly AppSettings _appSettings;
+        public AppUILauncher(AppSettings appSettings)
+        {
+            _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
+        }
+        internal void LaunchAppUI(string? arguments)
         {
             try
             {
@@ -21,14 +26,14 @@ namespace AppInstallerCLI
                 UI_Path = Path.GetDirectoryName(UI_Path); //Returns Base directory path
                 if (UI_Path is null) { return; }
 
-                UI_Path = Path.Combine(UI_Path, "Main", "AppInstallerUI.exe");
+                UI_Path = Path.Combine(UI_Path, _appSettings.MainDirectory, "AppInstallerUI.exe");
 
                 WindowsProcess.ExecuteExeFileDirectly(UI_Path, arguments ?? string.Empty);
             }
             catch (Exception ex)
             {
                 // If an error occurs, log it and exit the application
-                Console.WriteLine("Error launching App Installer UI: " + ex.Message);
+                Console.WriteLine($"Error launching {_appSettings.AppName} UI: " + ex.Message);
                 Environment.Exit(1);
             }
         }

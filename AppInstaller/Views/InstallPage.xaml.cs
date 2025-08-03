@@ -32,13 +32,12 @@ namespace AppInstaller.Views
     {
         private InstallerService installer {  get; set; }
         private DispatcherQueue dispatcher { get; set; }
-        private EventHandler? EndApp;
         public InstallPage()
         {
             InitializeComponent();
             dispatcher = DispatcherQueue.GetForCurrentThread();
             IProgressMessenger messenger = new DispatcherProgressMessenger(dispatcher, UpdateProgress);
-            installer = new InstallerService(App.AppConfig, messenger);
+            installer = new InstallerService(App.InstallConfig, App.AppSettings, messenger);
 
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
         }
@@ -55,6 +54,7 @@ namespace AppInstaller.Views
             {
                 progressBar.Visibility = Visibility.Collapsed;
             });
+
         }
 
         private async void UpdateProgress(object? sender, MessageResult msg)

@@ -43,11 +43,11 @@ namespace AppInstaller.Views
             bool valid_directories = await ValidateDirectories(cli_directory, install_folder);
             if (!valid_directories) {return;}
 
-            App.AppConfig.SourceCLIDirectoryPath = cli_directory;
-            App.AppConfig.SourceDirectoryPath = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
-            App.AppConfig.TargetInstallLocation = install_folder;
-            App.AppConfig.AppNameToInstall = App.NameWithoutSpaces;
-            App.AppConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
+            App.InstallConfig.SourceCLIDirectoryPath = cli_directory;
+            App.InstallConfig.SourceDirectoryPath = AppUtilities.GetCurrentLocationOfTheAppInstallerApp();
+            App.InstallConfig.TargetInstallLocation = install_folder;
+            App.InstallConfig.AppNameToInstall = App.AppSettings.GetAppNameWithoutSpaces();
+            App.InstallConfig.AddVariableToPath = checkbox_AddPathVariable.IsChecked ?? false;
             this.Frame.Navigate(typeof(InstallPage));
         }
 
