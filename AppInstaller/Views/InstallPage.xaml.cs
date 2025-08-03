@@ -24,6 +24,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.UI.Dispatching;
 using BusinessLogic.Messaging;
+using BusinessLogic.Install;
 
 
 // To learn more about WinUI, the WinUI project structure,

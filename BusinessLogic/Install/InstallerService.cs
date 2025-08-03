@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic
+namespace BusinessLogic.Install
 {
     public class InstallerService
     {
@@ -17,7 +17,7 @@ namespace BusinessLogic
         {
             this.appConfig = appConfig;
             this.messenger = messenger;
-            this.installer = new Installer(appConfig, messenger);
+            installer = new Installer(appConfig, messenger);
         }
 
         public async Task RunInstall()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using BusinessLogic.Messaging;
 
-namespace BusinessLogic
+namespace BusinessLogic.Install
 {
     internal class Installer
     {
@@ -19,7 +19,7 @@ namespace BusinessLogic
         {
             this.config = config;
             this.messenger = messenger;
-            this.fileController = new DirectoryFileReplacer(messenger);
+            fileController = new DirectoryFileReplacer(messenger);
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace BusinessLogic
         /// </summary>
         internal async Task Run(InstallType installType, bool add_to_enivronment_path_variable = false)
         {
-            if (String.IsNullOrEmpty(config.AppNameToInstall)) return;
+            if (string.IsNullOrEmpty(config.AppNameToInstall)) return;
 
             string? app_name = config.AppNameToInstall;
 
