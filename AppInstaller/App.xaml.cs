@@ -19,6 +19,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using BusinessLogic;
+using Windows.Foundation.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,7 +33,7 @@ namespace AppInstaller
     {
         public static string Name { get; } = "App Installer";
         public static string NameWithoutSpaces { get; } = Name.Replace(" ", String.Empty);
-        public static AppConfig AppConfig { get; set; } = new();
+        public static AppConfig AppConfig { get; } = new();
         public static MainWindow? MyWindow { get; private set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -49,34 +50,35 @@ namespace AppInstaller
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            StoreInstalledAppPathPassedAsArgument(args); //Must be called before creating the window to ensure values are set correctly for later steps.
+
             MyWindow = new MainWindow();
             MyWindow.Activate();
-            StoreInstalledAppPathPassedAsArgument(args);
         }
 
         private void StoreInstalledAppPathPassedAsArgument(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-
             string[] commandArgs = Environment.GetCommandLineArgs();
 
-            if (commandArgs.Length >= 1)
+            //Skip the first argument which is the executable path
+            if (commandArgs.Length >= 2)
             {
-                AppConfig.AppNameToInstall = commandArgs[0];
-            }
-            
-            if(commandArgs.Length >= 2)
-            {
-                AppConfig.SourceDirectoryPath = commandArgs[1];
+                AppConfig.AppNameToInstall = commandArgs[1];
             }
 
             if (commandArgs.Length >= 3)
             {
-                AppConfig.TargetInstallLocation = commandArgs[2];
+                AppConfig.SourceDirectoryPath = commandArgs[2];
             }
 
             if (commandArgs.Length >= 4)
             {
-                AppConfig.SourceCLIDirectoryPath = commandArgs[3];
+                AppConfig.TargetInstallLocation = commandArgs[3];
+            }
+
+            if (commandArgs.Length >= 5)
+            {
+                AppConfig.SourceCLIDirectoryPath = commandArgs[4];
             }
         }
 

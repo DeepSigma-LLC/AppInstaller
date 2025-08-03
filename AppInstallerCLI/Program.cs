@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // Program.cs
 using AppInstallerCLI;
+using BusinessLogic;
 using System.Diagnostics.SymbolStore;
 
 bool LaunchUI = false;
@@ -31,11 +32,13 @@ else if (args.Length > 0)
 if (LaunchUI)
 {
     Console.WriteLine("Launching App Installer UI...");
-    string? UI_arg1 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
-    string? UI_arg2 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
-    string? UI_arg3 = UI_arguements.Count > 0 ? UI_arguements[0] : null;
+    Console.WriteLine($"Arguements: {string.Join(",", UI_arguements)}");
+    string? UI_arg1 = UI_arguements.Count >= 1 ? UI_arguements[0] : null;
+    string? UI_arg2 = UI_arguements.Count >= 2 ? UI_arguements[1] : null;
+    string? UI_arg3 = UI_arguements.Count >= 3 ? UI_arguements[2] : null;
     AppUILauncher.LaunchAppUI(UI_arg1, UI_arg2, UI_arg3);
     CLIInfoController.ShowInfo();
+    AppUtilities.ExitApp();
 }
 
 

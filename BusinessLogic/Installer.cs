@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using BusinessLogic.Messaging;
 
 namespace BusinessLogic
 {
@@ -13,63 +14,62 @@ namespace BusinessLogic
         private AppConfig config { get; set; }
         private DirectoryFileReplacer fileController { get; set; }
 
-        internal EventHandler<MessageResult>? Progress_Log;
-
-        internal Installer(AppConfig config)
+        private IProgressMessenger? messenger { get; set; }
+        internal Installer(AppConfig config, IProgressMessenger? messenger = null)
         {
             this.config = config;
-            this.fileController = new DirectoryFileReplacer();
-            fileController.Progress_Log += OnProgress;
+            this.messenger = messenger;
+            this.fileController = new DirectoryFileReplacer(messenger);
         }
 
         /// <summary>
         /// Runs the file update program. 
         /// </summary>
-        internal void Run(InstallType installType, bool add_to_enivronment_path_variable = false)
+        internal async Task Run(InstallType installType, bool add_to_enivronment_path_variable = false)
         {
             if (String.IsNullOrEmpty(config.AppNameToInstall)) return;
 
             string? app_name = config.AppNameToInstall;
 
-            Progress_Log?.Invoke(null, new MessageResult("Validating app name..."));
+            messenger?.PostMessage(new MessageResult("Validating app name..."));
             if (app_name is null)
             {
-                Progress_Log?.Invoke(null, new MessageResult("ERROR: App name cannot be null. Ending process...", IsError:true));
+                messenger?.PostMessage(new MessageResult("ERROR: App name cannot be null. Ending process...", MessageResultType.Error));
                 return;
             }
 
             string? source_directory = GetSourceDirectory(installType);
-            Progress_Log?.Invoke(null, new MessageResult("Validating source directory..."));
+            messenger?.PostMessage(new MessageResult("Validating source directory..."));
             if (source_directory is null)
             {
-                Progress_Log?.Invoke(null, new MessageResult("ERROR: Source directory cannot be null. Ending process...", IsError:true));
+                messenger?.PostMessage(new MessageResult("ERROR: Source directory cannot be null. Ending process...", MessageResultType.Error));
                 return;
             }
 
-            Progress_Log?.Invoke(null, new MessageResult("Beginning installation..."));
-            Progress_Log?.Invoke(null, new MessageResult("Loading ignore filters..."));
+            messenger?.PostMessage(new MessageResult("Beginning installation..."));
+            messenger?.PostMessage(new MessageResult("Loading ignore filters..."));
             List<string> filters = config.GetIgnoreFilters();
             fileController.SetFilters(filters);
 
-            Progress_Log?.Invoke(null, new MessageResult("Checking if directory has been created..."));
+            messenger?.PostMessage(new MessageResult("Checking if directory has been created..."));
             string destination_path = GetTargetDirectory(installType, app_name);
-            CreateDirectoryIfNeeded(destination_path);
+            await Task.Run(() => CreateDirectoryIfNeeded(destination_path));
 
-            Progress_Log?.Invoke(null, new MessageResult("Starting directory clean up..."));
-            fileController.DeleteDirectoryRecursively(destination_path);
+            messenger?.PostMessage(new MessageResult("Starting directory clean up..."));
+            await Task.Run(() => fileController.DeleteDirectoryRecursively(destination_path));
 
-            Progress_Log?.Invoke(null, new MessageResult("Directory is now clean..."));
-            Progress_Log?.Invoke(null, new MessageResult("Initiating file transfer..."));
+            messenger?.PostMessage(new MessageResult("Directory is now clean..."));
+            messenger?.PostMessage(new MessageResult("Initiating file transfer..."));
 
-            fileController.CopyDirectoryRecursively(source_directory, destination_path);
+            await Task.Run(() => fileController.CopyDirectoryRecursively(source_directory, destination_path));
 
             if (EnvironmentVariables.DoesPathExist(destination_path) == false && add_to_enivronment_path_variable == true)
             {
-                Progress_Log?.Invoke(null,  new MessageResult("Adding to user environment path..."));
-                EnvironmentVariables.AddToPath(destination_path);
+                messenger?.PostMessage(new MessageResult("Adding to user environment path..."));
+                await Task.Run(() => EnvironmentVariables.AddToPath(destination_path));
             }
 
-            Progress_Log?.Invoke(null, new MessageResult("Installation is now complete!"));
+            messenger?.PostMessage(new MessageResult("Installation is now complete!", MessageResultType.Success));
         }
 
         private string GetTargetDirectory(InstallType installType, string app_name)
@@ -102,19 +102,13 @@ namespace BusinessLogic
         {
             if (Directory.Exists(destination_path) == false)
             {
-                Progress_Log?.Invoke(null, new MessageResult($"Creating directory: {destination_path}"));
+                messenger?.PostMessage(new MessageResult($"Creating directory: {destination_path}"));
                 Directory.CreateDirectory(destination_path);
             }
             else
             {
-                Progress_Log?.Invoke(null, new MessageResult($"Directory already exists: {destination_path}"));
+                messenger?.PostMessage(new MessageResult($"Directory already exists: {destination_path}"));
             }
-        }
-
-        private void OnProgress(object? sender, MessageResult e)
-        {
-            // Relay or transform the message as needed
-            Progress_Log?.Invoke(this, e);
         }
     }
 }

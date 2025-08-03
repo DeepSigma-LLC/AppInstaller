@@ -15,6 +15,7 @@ using Windows.Foundation.Collections;
 using AppInstaller.Classes.UI.ControlUtilities;
 using AppInstaller.Classes;
 using BusinessLogic;
+using System.Threading;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,9 +38,9 @@ namespace AppInstaller.Views
 
         private void LoadValuesFromAppConfig()
         {
+            textbox_appName.Text = App.AppConfig.AppNameToInstall;
             textbox_source_directory.Text = App.AppConfig.GetSourceDirectory() ?? String.Empty;
             textbox_selectedFilePath.Text = App.AppConfig.TargetInstallLocation;
-            textbox_appName.Text = App.AppConfig.AppNameToInstall;
         }
 
         private void Git_Repo_Download_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using AppInstallerUI.Classes;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,10 @@ namespace AppInstaller.Classes.UI.ControlUtilities
         {
             if (filters is null) filters = ["*"]; //Initialize to empty list if not set
 
-            sender.IsEnabled = false; //Since async
+            await window.DispatcherQueue.EnqueueAsync(() =>
+            {
+                sender.IsEnabled = false;
+            });
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
@@ -49,7 +53,10 @@ namespace AppInstaller.Classes.UI.ControlUtilities
                 ErrorMessagingEvent?.Invoke(null, "Operation cancelled.");
             }
 
-            sender.IsEnabled = true; //re-enable the button
+            await window.DispatcherQueue.EnqueueAsync(() =>
+            {
+                sender.IsEnabled = true; //re-enable the button
+            });
             return result;
         }
     }

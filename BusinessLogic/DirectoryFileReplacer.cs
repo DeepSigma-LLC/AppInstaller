@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Messaging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace BusinessLogic
 {
     public class DirectoryFileReplacer
     {
-        public EventHandler<MessageResult>? Progress_Log;
-        private List<string> filters { get; set; }
-        public DirectoryFileReplacer(List<string>? filters = null)
+        private List<string> filters { get; set; } = [];
+        private IProgressMessenger? messenger;
+        public DirectoryFileReplacer(IProgressMessenger? messenger = null)
         {
-            this.filters = filters ?? [];
+            this.messenger = messenger;
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace BusinessLogic
                 string dirName = Path.GetFileName(subDir);
                 string destSubDir = Path.Combine(destinationDir, dirName);
                 CopyDirectoryRecursively(subDir, destSubDir);
-                Progress_Log?.Invoke(null, new MessageResult("Directory copied: " + dirName));
+                messenger?.PostMessage(new MessageResult("Directory copied: " + dirName));
             }
         }
 
@@ -88,7 +89,7 @@ namespace BusinessLogic
                 string fileName = Path.GetFileName(filePath);
                 string destFilePath = Path.Combine(destinationDir, fileName);
                 File.Copy(filePath, destFilePath);
-                Progress_Log?.Invoke(null, new MessageResult("File copied: " + fileName));
+                messenger?.PostMessage(new MessageResult("File copied: " + fileName));
             }
         }
 
@@ -105,7 +106,7 @@ namespace BusinessLogic
                 string destSubDir = Path.Combine(directory_path, dirName);
                 DeleteDirectoryRecursively(destSubDir);
                 DeleteDirectories(destSubDir);
-                Progress_Log?.Invoke(null, new MessageResult("Directory delected: " + dirName));
+                messenger?.PostMessage(new MessageResult("Directory delected: " + dirName));
             }
         }
 
@@ -119,14 +120,14 @@ namespace BusinessLogic
         {
             foreach (string file in Directory.GetFiles(current_install_path))
             {
-                if (OkToDelete(file))
+                if (OkToDeleteFile(file))
                 {
                     File.Delete(Path.Combine(current_install_path, file));
-                    Progress_Log?.Invoke(null, new MessageResult("File deleted: " + file));
+                    messenger?.PostMessage(new MessageResult("File deleted: " + file));
                 }
                 else
                 {
-                    Progress_Log?.Invoke(null, new MessageResult("File ignored: " + file));
+                    messenger?.PostMessage(new MessageResult("File ignored: " + file));
                 }
             }
         }
@@ -140,33 +141,50 @@ namespace BusinessLogic
         {
             foreach (string directory in Directory.GetDirectories(current_install_path))
             {
-                if (OkToDelete(directory))
+                if (OkToDeleteDirectory(directory))
                 {
                     File.Delete(Path.Combine(current_install_path, directory));
-                    Progress_Log?.Invoke(null, new MessageResult("Directory deleted: " + directory));
+                    messenger?.PostMessage(new MessageResult("Directory deleted: " + directory));
                 }
                 else
                 {
-                    Progress_Log?.Invoke(null, new MessageResult("Directory ignored: " + directory));
+                    messenger?.PostMessage(new MessageResult("Directory ignored: " + directory, MessageResultType.Warning));
                 }
             }
         }
 
         /// <summary>
-        /// It is ok to delete a item if there is no matching filter.
+        /// It is ok to delete a file if there is no matching filter.
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filters"></param>
         /// <returns></returns>
-        private bool OkToDelete(string file_system_item)
+        private bool OkToDeleteFile(string file_system_item)
         {
             return !IgnoreFileUtilities.IgnoreItem(file_system_item, filters);
         }
 
-        private void OnProgress(object? sender, MessageResult e)
+        /// <summary>
+        /// It is ok to delete a item if there is no matching filter and the directory is empty.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        private bool OkToDeleteDirectory(string file_system_item)
         {
-            // Relay or transform the message as needed
-            Progress_Log?.Invoke(this, e);
+            // Do not delete if directory has content
+            if (Directory.EnumerateFileSystemEntries(file_system_item).Any())
+            {
+                return false;
+            }
+
+            // Do not delete if our ignore files instructs us to exclude it
+            if(IgnoreFileUtilities.IgnoreItem(file_system_item, filters))
+            {
+                return false;
+            }
+            return true;
         }
+
     }
 }

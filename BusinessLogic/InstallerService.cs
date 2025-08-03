@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,48 +12,44 @@ namespace BusinessLogic
     {
         private AppConfig appConfig { get; set; }
         private Installer installer { get; set; }
-
-        public EventHandler<MessageResult>? Progress_Log;
-        public InstallerService(AppConfig appConfig)
+        private IProgressMessenger? messenger = null;
+        public InstallerService(AppConfig appConfig, IProgressMessenger? messenger = null)
         {
             this.appConfig = appConfig;
-            this.installer = new Installer(appConfig);
-
-            installer.Progress_Log += OnProgress;
+            this.messenger = messenger;
+            this.installer = new Installer(appConfig, messenger);
         }
 
-        public void RunInstall()
+        public async Task RunInstall()
         {
-            Progress_Log?.Invoke(null, new MessageResult("Starting Application Installation... \n"));
+            messenger?.PostMessage(new MessageResult("Starting Application Installation... \n", MessageResultType.Success));
 
             if (appConfig.ValidateThatAllAppNamesMatch() == false)
             {
-                Progress_Log?.Invoke(null, new MessageResult("ERROR: The name of the name of the app you are trying to install does not match our expectations.", IsError:true));
+                messenger?.PostMessage(new MessageResult("ERROR: The name of the name of the app you are trying to install does not match our expectations.", MessageResultType.Error));
                 return;
             }
 
-            Progress_Log?.Invoke(null, new MessageResult("Checking for Main Installation... \n"));
+            messenger?.PostMessage(new MessageResult("\n\n"));
+            messenger?.PostMessage(new MessageResult("///////////////////////////////", MessageResultType.Success));
+            messenger?.PostMessage(new MessageResult("Checking for Main Installation..."));
             if (appConfig.GetSourceDirectory() is not null)
             {
-                Progress_Log?.Invoke(null, new MessageResult("Starting Main Installation... \n"));
-                installer.Run(InstallType.Main, false); //Always false.
+                messenger?.PostMessage(new MessageResult("Starting Main Installation..."));
+                await installer.Run(InstallType.Main, false); //Always false.
             }
 
-            Progress_Log?.Invoke(null, new MessageResult("Checking for CLI Installation... \n"));
+            messenger?.PostMessage(new MessageResult("\n\n"));
+            messenger?.PostMessage(new MessageResult("///////////////////////////////", MessageResultType.Success));
+            messenger?.PostMessage(new MessageResult("Checking for CLI Installation..."));
             if (appConfig.GetSourceCLIDirectory() is not null)
             {
-                Progress_Log?.Invoke(null, new MessageResult("Starting CLI Installation... \n"));
-                installer.Run(InstallType.CLI, appConfig.AddVariableToPath);
+                messenger?.PostMessage(new MessageResult("Starting CLI Installation..."));
+                await installer.Run(InstallType.CLI, appConfig.AddVariableToPath);
             }
-           
-            Progress_Log?.Invoke(null, new MessageResult("Done! "));
-            Progress_Log?.Invoke(null, new MessageResult("This application will close in 5 seconds and relaunch your target application."));
-        }
 
-        private void OnProgress(object? sender, MessageResult e)
-        {
-            // Relay or transform the message as needed
-            Progress_Log?.Invoke(this, e);
+            messenger?.PostMessage(new MessageResult("Done! \n", MessageResultType.Success));
+            messenger?.PostMessage(new MessageResult("This application will close in 5 seconds and relaunch your target application."));
         }
 
     }

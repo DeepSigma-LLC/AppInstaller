@@ -31,14 +31,13 @@ namespace AppInstaller
     public sealed partial class MainWindow : Window
     {
         public string VersionText { get; set; }
-        public string AppName { get; set; }
+        public string AppName => App.Name;
         public MainWindow()
         {
             InitializeComponent();
             NavigateToStartPage();
             SetFixedWindowSize();
 
-            AppName = App.Name;
             VersionText = AppUtilities.GetAppVersion(); // You must set the value before setting the data context
             RootGrid.DataContext = this; // You must do this last
         }
@@ -60,7 +59,8 @@ namespace AppInstaller
 
         private bool IsAppInstallerInstalled()
         {
-            return BusinessLogic.WindowsProcess.IsProgramInstalled(AppName);
+
+            return BusinessLogic.WindowsProcess.IsProgramInstalled(App.NameWithoutSpaces);
         }
 
         private void SetFixedWindowSize()

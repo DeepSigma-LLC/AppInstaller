@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInstaller", "..\AppInsta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "..\BusinessLogic\BusinessLogic.csproj", "{5C21343E-6C7B-4E97-A35A-41F9F82FAB5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic.Test", "..\BusinessLogic.Test\BusinessLogic.Test.csproj", "{6AA53D76-1CD1-4131-B74E-B795572420E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -61,6 +63,18 @@ Global
 		{5C21343E-6C7B-4E97-A35A-41F9F82FAB5C}.Release|x64.Build.0 = Release|Any CPU
 		{5C21343E-6C7B-4E97-A35A-41F9F82FAB5C}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C21343E-6C7B-4E97-A35A-41F9F82FAB5C}.Release|x86.Build.0 = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|x64.Build.0 = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Debug|x86.Build.0 = Debug|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|ARM64.Build.0 = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x64.ActiveCfg = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x64.Build.0 = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x86.ActiveCfg = Release|Any CPU
+		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,7 +34,7 @@ namespace BusinessLogic
         }
 
         // Use KnownFolders GUID to get Downloads folder
-        private static string? GetDownloadsPath()
+        internal static string? GetDownloadsPath()
         {
             IntPtr outPath;
             int hr = SHGetKnownFolderPath(KnownFolderDownloads, 0, IntPtr.Zero, out outPath);

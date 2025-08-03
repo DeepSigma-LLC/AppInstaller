@@ -60,13 +60,18 @@ namespace BusinessLogic
             }
         }
 
-        public static void ExecuteExeFileDirectly(string ExeFilePath, string Arguements)
+        public static void ExecuteExeFileDirectly(string FullExeFilePath, string Arguements)
         {
+            if (!File.Exists(FullExeFilePath))
+            {
+                throw new FileNotFoundException($"The executable file was not found: {FullExeFilePath}");
+            }
+
             var psi = new System.Diagnostics.ProcessStartInfo
             {
-                FileName = ExeFilePath,
+                FileName = FullExeFilePath,
                 Arguments = Arguements,
-                WorkingDirectory = Path.GetDirectoryName(ExeFilePath)!,
+                WorkingDirectory = Path.GetDirectoryName(FullExeFilePath)!,
                 UseShellExecute = true
             };
             System.Diagnostics.Process.Start(psi);
@@ -78,38 +83,34 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="ProgramName"></param>
         /// <returns></returns>
-        public static bool IsProgramInstalled(string ProgramName)
+        public static bool IsProgramInstalled(string programName)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe", //Or powershell.exe
-                Arguments = $"/c {ProgramName} --version",
+                FileName = "cmd.exe",
+                Arguments = $"/c where {programName}",
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
+            string? value = Environment.GetEnvironmentVariable("PATH");
 
             using (Process? process = Process.Start(startInfo))
             {
-                if (process is null) return false;
+                if (process == null) return false;
 
-                string output = process.StandardOutput.ReadToEnd().ToLower();
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
-                if (string.IsNullOrEmpty(output)) { return false; }
 
-                foreach (string error in GetErrorResponses())
-                {
-                    if (output.Contains(error.ToLower()))
-                    {
-                        return false;
-                    }
-                }
-                return true;
+                return process.ExitCode == 0 && string.IsNullOrWhiteSpace(error);
             }
         }
 
         /// <summary>
         /// Returns version from a terminal program name.
+        /// Note: This assumes the program supports a `--version` flag to output its version.
         /// </summary>
         /// <param name="ProgramName"></param>
         /// <returns></returns>
@@ -120,6 +121,7 @@ namespace BusinessLogic
                 FileName = "cmd.exe", //Or powershell.exe
                 Arguments = $"/c {ProgramName} --version",
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
@@ -129,26 +131,17 @@ namespace BusinessLogic
                 if (process is null) return null;
 
                 string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
 
-                foreach (string error in GetErrorResponses())
+                if(process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output))
                 {
-                    if (output.Contains(error))
-                    {
-                        return null;
-                    }
+                    return output;
                 }
-                return output;
+
+                return null;
             }
         }
 
-        /// <summary>
-        /// Gets an array of the most common terminal response error messages.
-        /// </summary>
-        /// <returns></returns>
-        private static string[] GetErrorResponses()
-        {
-            return ["error", "not recognized", "not found", "exception", "invalid"];
-        }
     }
 }
