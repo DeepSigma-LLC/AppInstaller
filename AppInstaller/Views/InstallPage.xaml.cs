@@ -1,5 +1,3 @@
-using AppInstaller.Classes;
-using AppInstaller.Classes.UI.ControlUtilities;
 using AppInstallerUI.Classes;
 using BusinessLogic;
 using Microsoft.UI;
@@ -25,6 +23,7 @@ using Windows.Foundation.Collections;
 using Microsoft.UI.Dispatching;
 using BusinessLogic.Messaging;
 using BusinessLogic.Install;
+using AppInstallerUI.Classes.UI;
 
 
 // To learn more about WinUI, the WinUI project structure,

@@ -1,4 +1,3 @@
-using AppInstaller.Classes;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;

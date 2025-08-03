@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using AppInstallerUI.Classes;
+using AppInstaller;
 
-namespace AppInstaller.Classes.UI.ControlUtilities
+namespace AppInstallerUI.Classes.UI
 {
     internal class FolderSelector : ISystemSelector
     {
@@ -30,7 +31,7 @@ namespace AppInstaller.Classes.UI.ControlUtilities
                 sender.IsEnabled = false;
             });
 
-            var openPicker = new Windows.Storage.Pickers.FolderPicker();
+            var openPicker = new FolderPicker();
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
 

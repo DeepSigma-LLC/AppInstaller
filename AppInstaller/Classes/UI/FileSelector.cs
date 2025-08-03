@@ -1,4 +1,5 @@
-﻿using AppInstallerUI.Classes;
+﻿using AppInstaller;
+using AppInstallerUI.Classes;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
-namespace AppInstaller.Classes.UI.ControlUtilities
+namespace AppInstallerUI.Classes.UI
 {
     public class FileSelector : ISystemSelector
     {
@@ -30,7 +31,7 @@ namespace AppInstaller.Classes.UI.ControlUtilities
             {
                 sender.IsEnabled = false;
             });
-            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var openPicker = new FileOpenPicker();
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
 
