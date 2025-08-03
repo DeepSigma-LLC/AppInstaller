@@ -63,7 +63,6 @@ namespace AppInstaller
             int startIndex = 0;
             foreach (var argument in commandArgs)
             {
-                Logger.Log($"Argument{startIndex}: " + argument, new Exception());
                 SetValueFromArgument(argument);
                 startIndex++;
             }
@@ -72,7 +71,6 @@ namespace AppInstaller
         private void SetValueFromArgument(string argument)
         {
             (string key, string value) = GetKeyValuePairFromArgument(argument);
-            Logger.Log("Key: " + key + " Value: " + value, new Exception());
             switch (key.ToLower())
             {
                 case "app":
