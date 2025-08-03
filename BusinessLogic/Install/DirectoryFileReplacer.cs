@@ -33,7 +33,7 @@ namespace BusinessLogic.Install
         /// <param name="destinationDir"></param>
         /// <param name="overwrite"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectoryRecursively(string source_directory, string destinationDir)
+        public async Task CopyDirectoryRecursively(string source_directory, string destinationDir)
         {
             if (Directory.Exists(source_directory) == false)
             {
@@ -45,8 +45,8 @@ namespace BusinessLogic.Install
                 Directory.CreateDirectory(destinationDir);
             }
 
-            CopyAllFiles(source_directory, destinationDir);
-            CopyEachSubDirectoryRecursively(source_directory, destinationDir);
+            await CopyAllFiles(source_directory, destinationDir);
+            await CopyEachSubDirectoryRecursively(source_directory, destinationDir);
         }
 
         /// <summary>
@@ -54,26 +54,26 @@ namespace BusinessLogic.Install
         /// </summary>
         /// <param name="directory_path"></param>
         /// <param name="filters"></param>
-        public void DeleteDirectoryRecursively(string directory_path)
+        public async Task DeleteDirectoryRecursively(string directory_path)
         {
             if (Directory.Exists(directory_path) == false)
             {
                 return;
             }
 
-            DeleteFiles(directory_path);
-            DeleteEachSubDirectoryRecursively(directory_path);
+            await DeleteFiles(directory_path);
+            await DeleteEachSubDirectoryRecursively(directory_path);
         }
 
         //Loop through every sub directroy in the source directory and copy all files and sub directories.
-        private void CopyEachSubDirectoryRecursively(string source_directory, string destinationDir)
+        private async Task CopyEachSubDirectoryRecursively(string source_directory, string destinationDir)
         {
             foreach (string subDir in Directory.GetDirectories(source_directory))
             {
                 string dirName = Path.GetFileName(subDir);
                 string destSubDir = Path.Combine(destinationDir, dirName);
-                CopyDirectoryRecursively(subDir, destSubDir);
-                messenger?.PostMessage(new MessageResult("Directory copied: " + dirName));
+                await CopyDirectoryRecursively(subDir, destSubDir);
+                await (messenger?.PostMessageAsync(new MessageResult("Directory copied: " + dirName)) ?? Task.CompletedTask);
             }
         }
 
@@ -82,14 +82,14 @@ namespace BusinessLogic.Install
         /// </summary>
         /// <param name="sourceDir"></param>
         /// <param name="destinationDir"></param>
-        private void CopyAllFiles(string sourceDir, string destinationDir)
+        private async Task CopyAllFiles(string sourceDir, string destinationDir)
         {
             foreach (string filePath in Directory.GetFiles(sourceDir))
             {
                 string fileName = Path.GetFileName(filePath);
                 string destFilePath = Path.Combine(destinationDir, fileName);
                 File.Copy(filePath, destFilePath);
-                messenger?.PostMessage(new MessageResult("File copied: " + fileName));
+                await (messenger?.PostMessageAsync(new MessageResult("File copied: " + fileName)) ?? Task.CompletedTask);
             }
         }
 
@@ -98,15 +98,14 @@ namespace BusinessLogic.Install
         /// Loops through each sub directory recursively and deletes all files and directories. 
         /// </summary>
         /// <param name="directory_path"></param>
-        private void DeleteEachSubDirectoryRecursively(string directory_path)
+        private async Task DeleteEachSubDirectoryRecursively(string directory_path)
         {
             foreach (string subDir in Directory.GetDirectories(directory_path))
             {
                 string dirName = Path.GetFileName(subDir);
                 string destSubDir = Path.Combine(directory_path, dirName);
-                DeleteDirectoryRecursively(destSubDir);
-                DeleteDirectories(destSubDir);
-                messenger?.PostMessage(new MessageResult("Directory delected: " + dirName));
+                await DeleteDirectoryRecursively(destSubDir);
+                await DeleteDirectories(destSubDir);
             }
         }
 
@@ -116,18 +115,18 @@ namespace BusinessLogic.Install
         /// </summary>
         /// <param name="current_install_path"></param>
         /// <param name="filters"></param>
-        private void DeleteFiles(string current_install_path)
+        private async Task DeleteFiles(string current_install_path)
         {
             foreach (string file in Directory.GetFiles(current_install_path))
             {
                 if (OkToDeleteFile(file))
                 {
                     File.Delete(Path.Combine(current_install_path, file));
-                    messenger?.PostMessage(new MessageResult("File deleted: " + file));
+                    await (messenger?.PostMessageAsync(new MessageResult("File deleted: " + file)) ?? Task.CompletedTask);
                 }
                 else
                 {
-                    messenger?.PostMessage(new MessageResult("File ignored: " + file));
+                    await (messenger?.PostMessageAsync(new MessageResult("File ignored: " + file)) ?? Task.CompletedTask);
                 }
             }
         }
@@ -137,18 +136,18 @@ namespace BusinessLogic.Install
         /// </summary>
         /// <param name="current_install_path"></param>
         /// <param name="filters"></param>
-        private void DeleteDirectories(string current_install_path)
+        private async Task DeleteDirectories(string current_install_path)
         {
             foreach (string directory in Directory.GetDirectories(current_install_path))
             {
                 if (OkToDeleteDirectory(directory))
                 {
                     File.Delete(Path.Combine(current_install_path, directory));
-                    messenger?.PostMessage(new MessageResult("Directory deleted: " + directory));
+                    await (messenger?.PostMessageAsync(new MessageResult("Directory deleted: " + directory)) ?? Task.CompletedTask);
                 }
                 else
                 {
-                    messenger?.PostMessage(new MessageResult("Directory ignored: " + directory, MessageResultType.Warning));
+                    await (messenger?.PostMessageAsync(new MessageResult("Directory ignored: " + directory, MessageResultType.Warning)) ?? Task.CompletedTask);
                 }
             }
         }

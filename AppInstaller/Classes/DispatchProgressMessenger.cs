@@ -19,9 +19,10 @@ namespace AppInstallerUI.Classes
             _handler = handler;
         }
 
-        public void PostMessage(MessageResult message)
+        public async Task PostMessageAsync(MessageResult message)
         {
             _dispatcher.TryEnqueue(() => _handler?.Invoke(this, message));
+            await Task.Delay(50); // Delay to ensure the message is processed in the UI thread.
         }
     }
 }

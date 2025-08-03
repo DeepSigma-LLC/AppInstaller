@@ -12,7 +12,7 @@ namespace BusinessLogic.Install
     {
         private AppConfig appConfig { get; set; }
         private Installer installer { get; set; }
-        private IProgressMessenger? messenger = null;
+        private IProgressMessenger? messenger { get; } = null;
         public InstallerService(AppConfig appConfig, IProgressMessenger? messenger = null)
         {
             this.appConfig = appConfig;
@@ -20,37 +20,43 @@ namespace BusinessLogic.Install
             installer = new Installer(appConfig, messenger);
         }
 
-        public async Task RunInstall()
+        public async Task RunInstallAsync()
         {
-            messenger?.PostMessage(new MessageResult("Starting Application Installation... \n", MessageResultType.Success));
-
+            await (messenger?.PostMessageAsync(new MessageResult("Starting Application Installation... \n", MessageResultType.Success)) ?? Task.CompletedTask);
             if (appConfig.ValidateThatAllAppNamesMatch() == false)
             {
-                messenger?.PostMessage(new MessageResult("ERROR: The name of the name of the app you are trying to install does not match our expectations.", MessageResultType.Error));
+                await (messenger?.PostMessageAsync(new MessageResult("ERROR: The name of the name of the app you are trying to install does not match our expectations.", MessageResultType.Error)) ?? Task.CompletedTask);
                 return;
             }
 
-            messenger?.PostMessage(new MessageResult("\n\n"));
-            messenger?.PostMessage(new MessageResult("///////////////////////////////", MessageResultType.Success));
-            messenger?.PostMessage(new MessageResult("Checking for Main Installation..."));
+            await (messenger?.PostMessageAsync(new MessageResult("\n\n")) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("///////////////////////////////", MessageResultType.Success)) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("Checking for Main Installation...")) ?? Task.CompletedTask);
             if (appConfig.GetSourceDirectory() is not null)
             {
-                messenger?.PostMessage(new MessageResult("Starting Main Installation..."));
-                await installer.Run(InstallType.Main, false); //Always false.
+                await (messenger?.PostMessageAsync(new MessageResult("Starting Main Installation...")) ?? Task.CompletedTask);
+                await installer.Run(InstallType.Main, false).ConfigureAwait(false); //Always false.
             }
 
-            messenger?.PostMessage(new MessageResult("\n\n"));
-            messenger?.PostMessage(new MessageResult("///////////////////////////////", MessageResultType.Success));
-            messenger?.PostMessage(new MessageResult("Checking for CLI Installation..."));
+            await (messenger?.PostMessageAsync(new MessageResult("\n\n")) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("///////////////////////////////", MessageResultType.Success)) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("Checking for CLI Installation...")) ?? Task.CompletedTask);
             if (appConfig.GetSourceCLIDirectory() is not null)
             {
-                messenger?.PostMessage(new MessageResult("Starting CLI Installation..."));
-                await installer.Run(InstallType.CLI, appConfig.AddVariableToPath);
+                await (messenger?.PostMessageAsync(new MessageResult("Starting CLI Installation...")) ?? Task.CompletedTask);
+                await installer.Run(InstallType.CLI, appConfig.AddVariableToPath).ConfigureAwait(false);
             }
 
-            messenger?.PostMessage(new MessageResult("Done! \n", MessageResultType.Success));
-            messenger?.PostMessage(new MessageResult("This application will close in 5 seconds and relaunch your target application."));
+            await (messenger?.PostMessageAsync(new MessageResult("Done! \n", MessageResultType.Success)) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("This application will close in 5 seconds and relaunch your target application.")) ?? Task.CompletedTask);
         }
 
+        public async Task RunInstallAsyncTest()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                await (messenger?.PostMessageAsync(new MessageResult($"Step {i}", MessageResultType.Success)) ?? Task.CompletedTask);
+            }
+        }
     }
 }

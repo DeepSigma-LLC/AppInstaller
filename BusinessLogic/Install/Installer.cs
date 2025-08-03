@@ -13,7 +13,6 @@ namespace BusinessLogic.Install
     {
         private AppConfig config { get; set; }
         private DirectoryFileReplacer fileController { get; set; }
-
         private IProgressMessenger? messenger { get; set; }
         internal Installer(AppConfig config, IProgressMessenger? messenger = null)
         {
@@ -31,45 +30,44 @@ namespace BusinessLogic.Install
 
             string? app_name = config.AppNameToInstall;
 
-            messenger?.PostMessage(new MessageResult("Validating app name..."));
+            await (messenger?.PostMessageAsync(new MessageResult("Validating app name...")) ?? Task.CompletedTask);
             if (app_name is null)
             {
-                messenger?.PostMessage(new MessageResult("ERROR: App name cannot be null. Ending process...", MessageResultType.Error));
+                await (messenger?.PostMessageAsync(new MessageResult("ERROR: App name cannot be null. Ending process...", MessageResultType.Error)) ?? Task.CompletedTask);
                 return;
             }
 
             string? source_directory = GetSourceDirectory(installType);
-            messenger?.PostMessage(new MessageResult("Validating source directory..."));
+            await (messenger?.PostMessageAsync(new MessageResult("Validating source directory...")) ?? Task.CompletedTask);
             if (source_directory is null)
             {
-                messenger?.PostMessage(new MessageResult("ERROR: Source directory cannot be null. Ending process...", MessageResultType.Error));
+                await (messenger?.PostMessageAsync(new MessageResult("ERROR: Source directory cannot be null. Ending process...", MessageResultType.Error)) ?? Task.CompletedTask);
                 return;
             }
 
-            messenger?.PostMessage(new MessageResult("Beginning installation..."));
-            messenger?.PostMessage(new MessageResult("Loading ignore filters..."));
+            await (messenger?.PostMessageAsync(new MessageResult("Beginning installation...")) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("Loading ignore filters...")) ?? Task.CompletedTask);
             List<string> filters = config.GetIgnoreFilters();
             fileController.SetFilters(filters);
 
-            messenger?.PostMessage(new MessageResult("Checking if directory has been created..."));
+            await (messenger?.PostMessageAsync(new MessageResult("Checking if directory has been created...")) ?? Task.CompletedTask);
             string destination_path = GetTargetDirectory(installType, app_name);
-            await Task.Run(() => CreateDirectoryIfNeeded(destination_path));
+            await CreateDirectoryIfNeededAsync(destination_path);
 
-            messenger?.PostMessage(new MessageResult("Starting directory clean up..."));
-            await Task.Run(() => fileController.DeleteDirectoryRecursively(destination_path));
+            await (messenger?.PostMessageAsync(new MessageResult("Starting directory clean up...")) ?? Task.CompletedTask);
+            await fileController.DeleteDirectoryRecursively(destination_path);
 
-            messenger?.PostMessage(new MessageResult("Directory is now clean..."));
-            messenger?.PostMessage(new MessageResult("Initiating file transfer..."));
-
-            await Task.Run(() => fileController.CopyDirectoryRecursively(source_directory, destination_path));
+            await (messenger?.PostMessageAsync(new MessageResult("Directory is now clean...")) ?? Task.CompletedTask);
+            await (messenger?.PostMessageAsync(new MessageResult("Initiating file transfer...")) ?? Task.CompletedTask);
+            await fileController.CopyDirectoryRecursively(source_directory, destination_path);
 
             if (EnvironmentVariables.DoesPathExist(destination_path) == false && add_to_enivronment_path_variable == true)
             {
-                messenger?.PostMessage(new MessageResult("Adding to user environment path..."));
-                await Task.Run(() => EnvironmentVariables.AddToPath(destination_path));
+                await (messenger?.PostMessageAsync(new MessageResult("Adding to user environment path...")) ?? Task.CompletedTask);
+                await Task.Run(() => EnvironmentVariables.AddToPath(destination_path)).ConfigureAwait(false);
             }
 
-            messenger?.PostMessage(new MessageResult("Installation is now complete!", MessageResultType.Success));
+            await (messenger?.PostMessageAsync(new MessageResult("Installation is now complete!", MessageResultType.Success)) ?? Task.CompletedTask);
         }
 
         private string GetTargetDirectory(InstallType installType, string app_name)
@@ -98,16 +96,16 @@ namespace BusinessLogic.Install
             }
         }
 
-        private void CreateDirectoryIfNeeded(string destination_path)
+        private async Task CreateDirectoryIfNeededAsync(string destination_path)
         {
             if (Directory.Exists(destination_path) == false)
             {
-                messenger?.PostMessage(new MessageResult($"Creating directory: {destination_path}"));
+                await (messenger?.PostMessageAsync(new MessageResult($"Creating directory: {destination_path}")) ?? Task.CompletedTask);
                 Directory.CreateDirectory(destination_path);
             }
             else
             {
-                messenger?.PostMessage(new MessageResult($"Directory already exists: {destination_path}"));
+                await (messenger?.PostMessageAsync(new MessageResult($"Directory already exists: {destination_path}")) ?? Task.CompletedTask);
             }
         }
     }

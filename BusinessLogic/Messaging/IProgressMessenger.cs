@@ -8,6 +8,6 @@ namespace BusinessLogic.Messaging
 {
     public interface IProgressMessenger
     {
-        void PostMessage(MessageResult message);
+        Task PostMessageAsync(MessageResult message);
     }
 }

@@ -3,12 +3,6 @@ using BusinessLogic;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Documents;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -47,51 +41,44 @@ namespace AppInstaller.Views
             installer = new InstallerService(App.AppConfig, messenger);
 
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
-            EndApp += Kill;
         }
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
         {
-            await UpdateTextAsync();
+            // make sure the bar is visible while installing
+            progressBar.Visibility = Visibility.Visible;
 
+            await Task.Run(async () => await installer.RunInstallAsync()); // Must use Task.Run since the installer is doing IO operations.
+
+            // back on the UI thread: hide the bar
             await dispatcher.EnqueueAsync(() =>
             {
                 progressBar.Visibility = Visibility.Collapsed;
             });
-            EndApp?.Invoke(this, EventArgs.Empty); 
-        }
-
-        private void Kill(object? sender, EventArgs e)
-        {
-            Thread.Sleep(5000); // Allow time for the UI to update before closing
-            AppUtilities.ExitApp();
-        }
-
-        private async Task UpdateTextAsync()
-        {
-            await installer.RunInstall();
         }
 
         private async void UpdateProgress(object? sender, MessageResult msg)
         {
-            Color selectedcolor = msg.MessageResultType switch
-            {
-                MessageResultType.Success => Color.LightGreen,
-                MessageResultType.Warning => Color.Yellow,
-                MessageResultType.Error => Color.Red,
-                _ => Color.White
-            };
-
             await dispatcher.EnqueueAsync(() =>
             {
-                RichEditBoxLogging.AppendColoredText(LogBox, msg.Message ?? string.Empty, selectedcolor);
-                RichEditBoxLogging.AppendColoredText(LogBox, "\n", Color.White);
+                Color selectedcolor = msg.MessageResultType switch
+                {
+                    MessageResultType.Success => Color.LightGreen,
+                    MessageResultType.Warning => Color.Yellow,
+                    MessageResultType.Error => Color.Red,
+                    _ => Color.White
+                };
 
-                LogBox.Document.Selection.SetRange(LogBox.Document.Selection.EndPosition, LogBox.Document.Selection.EndPosition);
-                LogBox.Focus(FocusState.Programmatic);
+                    RichEditBoxLogging.AppendColoredText(LogBox, msg.Message ?? string.Empty, selectedcolor);
+                    RichEditBoxLogging.AppendColoredText(LogBox, "\n", Color.White);
+
+                    LogBox.Document.Selection.SetRange(LogBox.Document.Selection.EndPosition, LogBox.Document.Selection.EndPosition);
+                    LogBox.Focus(FocusState.Programmatic);
             });
-            await Task.Yield(); // Yield to allow UI to update before continuing
         }
+
+
+
 
     }
 }
