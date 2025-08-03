@@ -23,7 +23,7 @@ namespace AppInstallerCLI
 
         internal static void InterfaceRequest(string CLIarguement)
         {
-            switch (CLIarguement)
+            switch (CLIarguement.ToLower())
             {
                 case "--version":
                     Console.WriteLine($"AppInstaller Version: {AppUtilities.GetAppVersion()}");

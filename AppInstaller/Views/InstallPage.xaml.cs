@@ -38,6 +38,7 @@ namespace AppInstaller.Views
     {
         private InstallerService installer {  get; set; }
         private DispatcherQueue dispatcher { get; set; }
+        private EventHandler? EndApp;
         public InstallPage()
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace AppInstaller.Views
             installer = new InstallerService(App.AppConfig, messenger);
 
             this.Loaded += Main_Loaded; //Setting up an event rather than calling the method directly since we need to exit the constructor prior to calling UI updates.
+            EndApp += Kill;
         }
 
         private async void Main_Loaded(object sender, RoutedEventArgs e)
@@ -56,6 +58,13 @@ namespace AppInstaller.Views
             {
                 progressBar.Visibility = Visibility.Collapsed;
             });
+            EndApp?.Invoke(this, EventArgs.Empty); 
+        }
+
+        private void Kill(object? sender, EventArgs e)
+        {
+            Thread.Sleep(5000); // Allow time for the UI to update before closing
+            AppUtilities.ExitApp();
         }
 
         private async Task UpdateTextAsync()

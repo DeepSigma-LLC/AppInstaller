@@ -40,6 +40,7 @@ namespace AppInstaller.Views
         {
             textbox_appName.Text = App.AppConfig.AppNameToInstall;
             textbox_source_directory.Text = App.AppConfig.GetSourceDirectory() ?? String.Empty;
+            textbox_CLI_source_directory.Text = App.AppConfig.GetSourceCLIDirectory() ?? String.Empty;
             textbox_selectedFilePath.Text = App.AppConfig.TargetInstallLocation;
         }
 

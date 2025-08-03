@@ -9,7 +9,7 @@ namespace AppInstallerCLI
 {
     internal static class AppUILauncher
     {
-        internal static void LaunchAppUI(string? AppName = null, string? SourcePath = null, string? TargetPath = null)
+        internal static void LaunchAppUI(string? arguments)
         {
             try
             {
@@ -22,8 +22,8 @@ namespace AppInstallerCLI
                 if (UI_Path is null) { return; }
 
                 UI_Path = Path.Combine(UI_Path, "Main", "AppInstallerUI.exe");
-                string argument_text = GetArguments(AppName, SourcePath, TargetPath);
-                WindowsProcess.ExecuteExeFileDirectly(UI_Path, argument_text);
+
+                WindowsProcess.ExecuteExeFileDirectly(UI_Path, arguments ?? string.Empty);
             }
             catch (Exception ex)
             {
@@ -32,15 +32,5 @@ namespace AppInstallerCLI
                 Environment.Exit(1);
             }
         }
-
-        private static string GetArguments(string? AppName, string? SourcePath, string? TargetPath)
-        {
-            if (AppName is not null)
-            {
-                return AppName;
-            }
-            return string.Empty;
-        }
-
     }
 }

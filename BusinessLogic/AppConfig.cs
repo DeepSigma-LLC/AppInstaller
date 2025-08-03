@@ -18,6 +18,17 @@ namespace BusinessLogic
         public string SourceCLIDirectoryPath { private get; set; } = string.Empty;
         public string TargetInstallLocation { get; set; } = string.Empty;
         public bool AddVariableToPath { get; set; } = false;
+        public bool AutoInstall { get; set; } = false;
+
+
+        /// <summary>
+        /// Determines if the target install location is needed.
+        /// </summary>
+        /// <returns></returns>
+        public bool OkToAutoInstall()
+        {
+            return IsInstallLocationNeeded() == false && AutoInstall;
+        }
 
         /// <summary>
         /// Determines if the target install location is needed.

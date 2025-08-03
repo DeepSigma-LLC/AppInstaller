@@ -60,27 +60,47 @@ namespace AppInstaller
         {
             string[] commandArgs = Environment.GetCommandLineArgs();
 
-            //Skip the first argument which is the executable path
-            if (commandArgs.Length >= 2)
+            int startIndex = 0;
+            foreach (var argument in commandArgs)
             {
-                AppConfig.AppNameToInstall = commandArgs[1];
-            }
-
-            if (commandArgs.Length >= 3)
-            {
-                AppConfig.SourceDirectoryPath = commandArgs[2];
-            }
-
-            if (commandArgs.Length >= 4)
-            {
-                AppConfig.TargetInstallLocation = commandArgs[3];
-            }
-
-            if (commandArgs.Length >= 5)
-            {
-                AppConfig.SourceCLIDirectoryPath = commandArgs[4];
+                Logger.Log($"Argument{startIndex}: " + argument, new Exception());
+                SetValueFromArgument(argument);
+                startIndex++;
             }
         }
 
+        private void SetValueFromArgument(string argument)
+        {
+            (string key, string value) = GetKeyValuePairFromArgument(argument);
+            Logger.Log("Key: " + key + " Value: " + value, new Exception());
+            switch (key.ToLower())
+            {
+                case "app":
+                    AppConfig.AppNameToInstall = value;
+                    break;
+                case "source":
+                    AppConfig.SourceDirectoryPath = value;
+                    break;
+                case "target":
+                    AppConfig.TargetInstallLocation = value;
+                    break;
+                case "clisource":
+                    AppConfig.SourceCLIDirectoryPath = value;
+                    break;
+                case "auto":
+                    bool successfullyParsed = bool.TryParse(value, out bool result);
+                    if (successfullyParsed) {AppConfig.AutoInstall = result; }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private (string, string) GetKeyValuePairFromArgument(string argument)
+        {
+            string[] inputs = argument.Split("=", StringSplitOptions.TrimEntries);
+            (string key, string value) = (inputs.Length > 0 ? inputs[0] : string.Empty, inputs.Length > 1 ? inputs[1] : string.Empty);
+            return (key, value);
+        }
     }
 }

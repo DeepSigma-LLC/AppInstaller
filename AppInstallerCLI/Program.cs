@@ -15,7 +15,7 @@ else if (args.Length > 0)
 {
     foreach (string arg in args)
     {
-        string value = arg.Trim().ToLower();
+        string value = arg.Trim();
         if (arg.StartsWith("--"))
         {
             CLIInfoController.InterfaceRequest(value);
@@ -32,11 +32,9 @@ else if (args.Length > 0)
 if (LaunchUI)
 {
     Console.WriteLine("Launching App Installer UI...");
-    Console.WriteLine($"Arguements: {string.Join(",", UI_arguements)}");
-    string? UI_arg1 = UI_arguements.Count >= 1 ? UI_arguements[0] : null;
-    string? UI_arg2 = UI_arguements.Count >= 2 ? UI_arguements[1] : null;
-    string? UI_arg3 = UI_arguements.Count >= 3 ? UI_arguements[2] : null;
-    AppUILauncher.LaunchAppUI(UI_arg1, UI_arg2, UI_arg3);
+    Console.WriteLine($"Arguements: {string.Join(", ", UI_arguements)}");
+    string arg_text = string.Join(" ", UI_arguements);
+    AppUILauncher.LaunchAppUI(arg_text);
     CLIInfoController.ShowInfo();
     AppUtilities.ExitApp();
 }

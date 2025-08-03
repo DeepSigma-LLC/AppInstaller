@@ -49,12 +49,12 @@ namespace AppInstaller
                 contentFrame.Navigate(typeof(Views.FirstTimeLaunchPage));
                 return;
             }
-            else if(App.AppConfig.IsInstallLocationNeeded() == true)
+            else if(App.AppConfig.OkToAutoInstall())
             {
-                contentFrame.Navigate(typeof(Views.InstallPromptUser));
+                contentFrame.Navigate(typeof(Views.InstallPage));
                 return;
             }
-            contentFrame.Navigate(typeof(Views.InstallPage));
+            contentFrame.Navigate(typeof(Views.InstallPromptUser));
         }
 
         private bool IsAppInstallerInstalled()
