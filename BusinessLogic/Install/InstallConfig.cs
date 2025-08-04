@@ -12,6 +12,7 @@ namespace BusinessLogic.Install
 {
     public class InstallConfig
     {
+
         public string IgnoreFileName { get;} = "AppIgnore.txt";
         public string AppNameToInstall { get; set; } = string.Empty;
         public string? SourceDirectoryPath { private get; set; } = null;
@@ -19,6 +20,19 @@ namespace BusinessLogic.Install
         public string TargetInstallLocation { get; set; } = string.Empty;
         public bool AddVariableToPath { get; set; } = false;
         public bool AutoInstall { get; set; } = false;
+
+
+        /// <summary>
+        /// Validate the target install location.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTargetInstallLocationValid()
+        {
+            if (string.IsNullOrEmpty(TargetInstallLocation)) return false;
+            if (SourceDirectoryPath is null) return true;
+            if (SourceDirectoryPath.Contains(TargetInstallLocation)) return false;
+            return true;
+        }
 
         /// <summary>
         /// Determines if the target install location is needed.
@@ -169,6 +183,7 @@ namespace BusinessLogic.Install
         /// <returns></returns>
         private string? TryGetLatestVersionDirectory()
         {
+            if(SourceDirectoryPath is null) { return null; }
             return AppVersioningService.GetLatestVersionFolder(SourceDirectoryPath);
         }
     }

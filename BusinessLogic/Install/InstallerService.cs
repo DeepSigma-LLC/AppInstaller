@@ -29,6 +29,14 @@ namespace BusinessLogic.Install
                 return;
             }
 
+            if (installConfig.IsTargetInstallLocationValid() == false)
+            {
+                await (messenger?.PostMessageAsync(
+                    new MessageResult("ERROR: The target install location is invalid. Please make sure that the target directory in not within the source directroy otherwise an endless loop will be created! Ending process...", 
+                    MessageResultType.Error)) ?? Task.CompletedTask);
+                return;
+            }
+
             await (messenger?.PostMessageAsync(new MessageResult("\n\n")) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("///////////////////////////////", MessageResultType.Success)) ?? Task.CompletedTask);
             await (messenger?.PostMessageAsync(new MessageResult("Checking for Main Installation...")) ?? Task.CompletedTask);
@@ -51,12 +59,5 @@ namespace BusinessLogic.Install
             await (messenger?.PostMessageAsync(new MessageResult("This application will close in 5 seconds and relaunch your target application.")) ?? Task.CompletedTask);
         }
 
-        public async Task RunInstallAsyncTest()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                await (messenger?.PostMessageAsync(new MessageResult($"Step {i}", MessageResultType.Success)) ?? Task.CompletedTask);
-            }
-        }
     }
 }

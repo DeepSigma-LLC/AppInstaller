@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
-    internal class TempFolderUtility
+    public class TempFolderUtility
     {
         private static readonly Guid KnownFolderDownloads = new Guid("374DE290-123F-4565-9164-39C4925E467B");
         /// <summary>
@@ -34,7 +34,7 @@ namespace BusinessLogic
         }
 
         // Use KnownFolders GUID to get Downloads folder
-        internal static string? GetDownloadsPath()
+        public static string? GetDownloadsPath()
         {
             IntPtr outPath;
             int hr = SHGetKnownFolderPath(KnownFolderDownloads, 0, IntPtr.Zero, out outPath);

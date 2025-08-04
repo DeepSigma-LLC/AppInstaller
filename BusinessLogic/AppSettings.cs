@@ -13,6 +13,7 @@ namespace BusinessLogic
         public string AppAuthor { get; init; } = String.Empty;
         public string MainDirectory { get; init; } = String.Empty;
         public string CLIDirectory { get; init; } = String.Empty;
+        public bool AutoClose { get; set; } = true;
         public AppSettings(){}
 
         public string GetAppNameWithoutSpaces()

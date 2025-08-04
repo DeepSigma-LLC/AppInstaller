@@ -17,7 +17,7 @@ namespace AppInstallerUI.Classes.UI
                 XamlRoot = contextElement.XamlRoot,
                 Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
                 Title = title,
-                Content = new TextBlock { Text = contentMessage},
+                Content = new TextBlock { Text = contentMessage, TextWrapping=TextWrapping.WrapWholeWords},
                 PrimaryButtonText = primaryButtonText,
                 SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,

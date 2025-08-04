@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "..\Busines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic.Test", "..\BusinessLogic.Test\BusinessLogic.Test.csproj", "{6AA53D76-1CD1-4131-B74E-B795572420E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleLibrary", "..\ConsoleLibrary\ConsoleLibrary.csproj", "{40788DFA-0958-4684-9F2F-C4FA01BFFC07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -75,6 +77,18 @@ Global
 		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x64.Build.0 = Release|Any CPU
 		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{6AA53D76-1CD1-4131-B74E-B795572420E2}.Release|x86.Build.0 = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|x64.Build.0 = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Debug|x86.Build.0 = Debug|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|ARM64.Build.0 = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|x64.ActiveCfg = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|x64.Build.0 = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|x86.ActiveCfg = Release|Any CPU
+		{40788DFA-0958-4684-9F2F-C4FA01BFFC07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

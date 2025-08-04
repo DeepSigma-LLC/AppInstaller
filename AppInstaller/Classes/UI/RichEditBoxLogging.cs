@@ -13,31 +13,44 @@ namespace AppInstallerUI.Classes.UI
     {
         internal static void AppendColoredText(RichEditBox box, string text, System.Drawing.Color color)
         {
-            var doc = box.Document;
+            bool wasReadOnly = box.IsReadOnly;
+            if (wasReadOnly) { box.IsReadOnly = false; }
 
-            // Move selection to end of document
-            doc.GetText(Microsoft.UI.Text.TextGetOptions.None, out string existingText);
-            int end = existingText.Length;
-            doc.Selection.SetRange(end, end); // collapse selection
-
-            // SAFELY get and apply format
-            var format = doc.Selection.CharacterFormat;
-            var safeColor = ConvertColor(color);
-
-            // This avoids UnauthorizedAccessException
-            if (format != null)
+            try
             {
-                format.ForegroundColor = safeColor;
-                format.Bold = Microsoft.UI.Text.FormatEffect.Off;
+                var doc = box.Document;
+
+                // Move selection to end of document
+                doc.GetText(Microsoft.UI.Text.TextGetOptions.None, out string existingText);
+                int end = existingText.Length;
+                doc.Selection.SetRange(end, end); // collapse selection
+
+                // SAFELY get and apply format
+                var format = doc.Selection.CharacterFormat;
+                var safeColor = ConvertColor(color);
+
+                if (format != null)
+                {
+                    format.ForegroundColor = safeColor;
+                    format.Bold = Microsoft.UI.Text.FormatEffect.Off;
+                }
+
+                // Insert text
+                doc.Selection.Text = text;
+
+                // Move caret to end
+                int newEnd = doc.Selection.EndPosition;
+                doc.Selection.SetRange(newEnd, newEnd);
             }
-
-            // Insert text
-            doc.Selection.Text = text;
-
-            // Move caret to end
-            int newEnd = doc.Selection.EndPosition;
-            doc.Selection.SetRange(newEnd, newEnd);
+            finally
+            {
+                if (wasReadOnly)
+                {
+                    box.IsReadOnly = true;
+                }
+            }
         }
+
 
         internal static void AppendColoredText(RichTextBlock block, string text, System.Drawing.Color color)
         {

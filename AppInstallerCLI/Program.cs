@@ -3,7 +3,10 @@
 using AppInstallerCLI;
 using BusinessLogic;
 using Microsoft.Extensions.Configuration;
+using ConsoleLibrary;
 
+
+string[] original_args = args; // Store original arguments for CLI processing
 
 // Set up configuration
 AppSettings settings = new();
@@ -13,35 +16,20 @@ var config = new ConfigurationBuilder()
     .Build();
 config.GetSection("AppSettings").Bind(settings);
 
-CLIInfoController cLIInfo = new(settings);
+
+ConsoleArgumentCollection argumentsMetaData = new();
+ConsoleArgumentController CLIController = new(argumentsMetaData, settings.AppName);
+argumentsMetaData = CLIArgumentBuilder.GetAllArguments(() => CLIController.ShowHelp(settings.AppName));
 
 
-bool LaunchUI = false;
 List<string> UI_arguements = [];
-
-if (args.Length == 0)
+if (args.Length > 0)
 {
-    LaunchUI = true;
-}
-else if (args.Length > 0)
-{
-    foreach (string arg in args)
-    {
-        string value = arg.Trim();
-        if (arg.StartsWith("--"))
-        {
-            cLIInfo.InterfaceRequest(value);
-        }
-        else
-        {
-            UI_arguements.Add(value);
-            LaunchUI = true;
-        }
-    }
+    UI_arguements.AddRange(CLIController.ProcessArguments(args));
 }
 
 
-if (LaunchUI)
+if (original_args.Length == 0 || UI_arguements.Count() > 0)
 {
     Console.WriteLine($"Launching {settings.AppName} UI...");
     Console.WriteLine($"Arguments: {string.Join(", ", UI_arguements)}");
@@ -49,8 +37,7 @@ if (LaunchUI)
     string arg_text = string.Join(" ", UI_arguements);
     AppUILauncher appUI = new(settings);
     appUI.LaunchAppUI(arg_text);
-    cLIInfo.ShowInfo();
-    AppUtilities.ExitApp();
+    CLIController.ShowInfo(AppUtilities.GetAppVersion(), AppUtilities.GetCurrentLocationOfTheAppInstallerApp());
 }
 
 

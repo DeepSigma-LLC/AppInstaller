@@ -9,10 +9,11 @@ namespace BusinessLogic.Messaging
 {
     public class MessageResult
     {
-        public string? Message { get; set; }
-        public ErrorEventArgs? ErrorEventArgs { get; set; }
-        public string? ErrorStackTrace { get; set; }
-        public MessageResultType MessageResultType { get; set; } = MessageResultType.Default;
+        public string? Message { get; init; }
+        public ErrorEventArgs? ErrorEventArgs { get; init; }
+        public string? ErrorStackTrace { get; init; }
+        public MessageResultType MessageResultType { get; init; } = MessageResultType.Default;
+        public DateTime EntryDateTime { get; init; } = DateTime.Now;
         public MessageResult() { }
         public MessageResult(string? Message, MessageResultType messageResultType = MessageResultType.Default, ErrorEventArgs? e = null)
         {

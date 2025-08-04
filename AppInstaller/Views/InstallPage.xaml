@@ -11,17 +11,26 @@
 
     <StackPanel Padding="15, 0, 15, 0">
         <!--RichEditBox x:Name="textbox_log" Grid.Row="0" FontSize="11" TextWrapping="Wrap" IsSpellCheckEnabled="False" IsEnabled="False"/-->
+        <ScrollViewer x:Name="LogScrollViewer">
+            <RichTextBlock x:Name="LogTextBlock" TextWrapping="WrapWholeWords" Foreground="White" MaxHeight="300"/>
+        </ScrollViewer>
             <RichEditBox x:Name="LogBox"
              TextWrapping="Wrap"
-             Height="300"
+             Height="280"
              Background="Black"
              Foreground="White"
              BorderThickness="2"
              BorderBrush="Gray"
-             Padding="10"/>
+             Padding="10"
+             IsReadOnly="True"/>
         
         <TextBlock/>
         <ProgressBar x:Name="progressBar" IsIndeterminate="True" ShowPaused="False" ShowError="False"  HorizontalAlignment="Stretch"/>
         <TextBlock FontSize="7"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="button_cancel" Content="Cancel Shutdown" Click="Button_Cancel_Click" MinWidth="100" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Center"/>
+            <TextBlock Padding="10, 0 ,0 ,0"/>
+            <Button x:Name="button_export" Content="Export Log" Click="Button_Export_Click" MinWidth="100"  HorizontalAlignment="Center"/>
+        </StackPanel>
     </StackPanel>
 </Page>
