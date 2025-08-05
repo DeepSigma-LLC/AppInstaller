@@ -16,10 +16,8 @@ var config = new ConfigurationBuilder()
     .Build();
 config.GetSection("AppSettings").Bind(settings);
 
-
 ConsoleArgumentCollection argumentsMetaData = new();
-ConsoleArgumentController CLIController = new(argumentsMetaData, settings.AppName);
-argumentsMetaData = CLIArgumentBuilder.GetAllArguments(() => CLIController.ShowHelp(settings.AppName));
+ConsoleArgumentController CLIController = new(CLIArgumentBuilder.GetAllArguments(), settings.AppName);
 
 
 List<string> UI_arguements = [];

@@ -8,13 +8,13 @@ namespace ConsoleLibrary
 {
     public class ConsoleArgumentController
     {
-
-        private ConsoleArgumentCollection consoleArguments = new();
+        private ConsoleArgumentCollection consoleArguments { get; init; }
         private string AppName { get; } = string.Empty;
         public ConsoleArgumentController(ConsoleArgumentCollection consoleArguments, string AppName)
         {
             this.consoleArguments = consoleArguments;
             this.AppName = AppName;
+            AddHelpArgument();
         }
 
 
@@ -33,19 +33,6 @@ namespace ConsoleLibrary
             Environment.Exit(0);
         }
 
-        /// <summary>
-        /// Generates a help message for the console application.
-        /// </summary>
-        /// <param name="AppName"></param>
-        public void ShowHelp(string AppName)
-        {
-            Console.WriteLine($"Usage: {AppName} [--version | --help | | --path | No Arguement]");
-
-            foreach (var argument in consoleArguments.GetCollection())
-            {
-                Console.WriteLine($"{argument.Key}: {argument.Value.Description}");
-            }
-        }
 
         /// <summary>
         /// Processes the command-line arguments passed to the application.
@@ -78,9 +65,9 @@ namespace ConsoleLibrary
         /// Processes the command-line interface request based on the provided argument.
         /// </summary>
         /// <param name="CLIarguement"></param>
-        private void CLIInterfaceRequest(string CLIarguement)
+        private void CLIInterfaceRequest(string argument)
         {
-            string arg = CLIarguement.ToLower();
+            string arg = argument.ToLower();
             if (consoleArguments.GetCollection().ContainsKey(arg))
             {
                 consoleArguments.GetCollection()[arg].Method.Invoke();
@@ -88,6 +75,30 @@ namespace ConsoleLibrary
             else
             {
                 Console.WriteLine("Invalid argument");
+            }
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Adds a help argument to the console arguments collection.
+        /// </summary>
+        private void AddHelpArgument()
+        {
+            consoleArguments.Add("--help", new ConsoleArgument(ShowHelp, ""));
+        }
+
+
+        /// <summary>
+        /// Generates a help message for the console application.
+        /// </summary>
+        /// <param name="AppName"></param>
+        private void ShowHelp()
+        {
+            Console.WriteLine($"Usage: {AppName} [--version | --help | --path | No Argument]");
+
+            foreach (var argument in consoleArguments.GetCollection())
+            {
+                Console.WriteLine($"{argument.Key}: {argument.Value.Description}");
             }
         }
 

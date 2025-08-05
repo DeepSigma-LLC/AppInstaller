@@ -64,13 +64,22 @@ namespace AppInstaller.Views
 
             await Task.Delay(5000); // Wait for 5 seconds to allow the user to read the results before closing the app.
 
-            if (App.AppSettings.AutoClose)
+            bool wereErrorsEncountered = MessageResults.GetMessages().Where(x => x.MessageResultType == MessageResultType.Error).Any();
+            if (wereErrorsEncountered)
+            {
+                await dispatcher.EnqueueAsync(async () =>
+                {
+                    await MessageBox.ShowDialogAsync(this, "Installation complete! The application will not close automatically since errors were encountered.", "OK", title:"Error");
+
+                });
+            }
+            else if (App.AppSettings.AutoClose)
             {
                 AppUtilities.ExitApp();
             }
             else
             {
-                await dispatcher.EnqueueAsync(async() =>
+                await dispatcher.EnqueueAsync(async () =>
                 {
                     await MessageBox.ShowDialogAsync(this, "Installation complete! The application will not close automatically since auto-close is disabled. You can now use the installed application.", "OK");
 
