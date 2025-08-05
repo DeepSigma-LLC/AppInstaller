@@ -24,7 +24,7 @@ namespace AppInstallerCLI
                "Display the current directory of the application.");
             arguments.Add("--path", path);
 
-            arguments.Add("No arguments", new ConsoleArgument(() => {}, "Launchs the UI version of the application.")); //Action does nothing, just launches the UI version.
+            arguments.Add("No Argument", new ConsoleArgument(() => {}, "Launchs the UI version of the application.")); //Action does nothing, just launches the UI version.
 
             return arguments;
         }
