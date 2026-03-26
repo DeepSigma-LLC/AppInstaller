@@ -16,8 +16,7 @@ var config = new ConfigurationBuilder()
     .Build();
 config.GetSection("AppSettings").Bind(settings);
 
-ConsoleArgumentCollection argumentsMetaData = new();
-ConsoleArgumentController CLIController = new(CLIArgumentBuilder.GetAllArguments(), settings.AppName);
+ConsoleArgumentController CLIController = new(CLIArgumentBuilder.GetAllArguments(), settings.AppName, AppUtilities.GetAppVersion(), AppUtilities.GetCurrentLocationOfTheAppInstallerApp());
 
 
 List<string> UI_arguements = [];
@@ -35,7 +34,6 @@ if (original_args.Length == 0 || UI_arguements.Count() > 0)
     string arg_text = string.Join(" ", UI_arguements);
     AppUILauncher appUI = new(settings);
     appUI.LaunchAppUI(arg_text);
-    CLIController.ShowInfo(AppUtilities.GetAppVersion(), AppUtilities.GetCurrentLocationOfTheAppInstallerApp());
 }
 
 

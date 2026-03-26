@@ -8,9 +8,8 @@ namespace ConsoleLibrary
 {
     public class ConsoleArgument
     {
-        public string Description { get; set; } = String.Empty;
         public Action Method { get; set; }
-
+        public string Description { get; set; } = String.Empty;
         public ConsoleArgument(Action action, string description)
         {
             this.Description = description;

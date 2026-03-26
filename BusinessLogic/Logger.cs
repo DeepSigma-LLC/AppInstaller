@@ -10,8 +10,6 @@ namespace BusinessLogic
     {
         public static void Log(string message, Exception? e)
         {
-            // Here you can implement your logging logic, e.g., write to a file, console, etc.
-            // For simplicity, we'll just write to the console.
             string[] content = new string[]
             {
                 $"{DateTime.Now.ToString()} : {message}",

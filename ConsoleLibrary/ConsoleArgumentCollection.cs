@@ -8,28 +8,35 @@ namespace ConsoleLibrary
 {
     public class ConsoleArgumentCollection
     {
-        private SortedDictionary<string, ConsoleArgument> _arguments = new();
-        public ConsoleArgumentCollection()
-        {
-            
-        }
+        private SortedDictionary<string, ConsoleArgument> Arguments = new();
+        public ConsoleArgumentCollection(){}
 
         public void Add(string argumentName, ConsoleArgument consoleArgument)
+        {
+            ValidateArgumentName(argumentName);
+            ValidateConsoleArgument(consoleArgument);
+            Arguments[argumentName] = consoleArgument;
+        }
+
+        public SortedDictionary<string, ConsoleArgument> GetCollection()
+        {
+            return Arguments;
+        }
+
+        private void ValidateArgumentName(string argumentName)
         {
             if (string.IsNullOrWhiteSpace(argumentName))
             {
                 throw new ArgumentException("Argument name cannot be null or whitespace.", nameof(argumentName));
             }
-            if (consoleArgument == null)
-            {
-                throw new ArgumentNullException(nameof(consoleArgument), "Argument value cannot be null.");
-            }
-            _arguments[argumentName] = consoleArgument;
         }
 
-        public SortedDictionary<string, ConsoleArgument> GetCollection()
+        private void ValidateConsoleArgument(ConsoleArgument argument)
         {
-            return _arguments;
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument), "Argument value cannot be null.");
+            }
         }
     }
 }

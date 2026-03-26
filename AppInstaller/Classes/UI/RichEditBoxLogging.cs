@@ -51,7 +51,6 @@ namespace AppInstallerUI.Classes.UI
             }
         }
 
-
         internal static void AppendColoredText(RichTextBlock block, string text, System.Drawing.Color color)
         {
             var run = new Run

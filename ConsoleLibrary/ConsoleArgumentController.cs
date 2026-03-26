@@ -10,10 +10,14 @@ namespace ConsoleLibrary
     {
         private ConsoleArgumentCollection consoleArguments { get; init; }
         private string AppName { get; } = string.Empty;
-        public ConsoleArgumentController(ConsoleArgumentCollection consoleArguments, string AppName)
+        private string AppVersion { get; } = string.Empty;
+        private string CurrentInstallationDirectory { get; } = string.Empty;
+        public ConsoleArgumentController(ConsoleArgumentCollection consoleArguments, string AppName, string AppVersion, string CurrentInstallationDirectory)
         {
             this.consoleArguments = consoleArguments;
             this.AppName = AppName;
+            this.AppVersion = AppVersion;
+            this.CurrentInstallationDirectory = CurrentInstallationDirectory;
             AddHelpArgument();
         }
 
@@ -23,7 +27,7 @@ namespace ConsoleLibrary
         /// </summary>
         /// <param name="AppVersion"></param>
         /// <param name="CurrentInstallationDirectory"></param>
-        public void ShowInfo(string AppVersion, string CurrentInstallationDirectory)
+        public void ShowInfo()
         {
             Console.WriteLine($"{AppName}");
             Console.WriteLine($"Version: {AppVersion}");
@@ -94,13 +98,13 @@ namespace ConsoleLibrary
         /// <param name="AppName"></param>
         private void ShowHelp()
         {
-            Console.WriteLine($"Usage: {AppName} [--version | --help | --path | No Argument]");
+            string argumwents = string.Join(" | ", consoleArguments.GetCollection().Keys);
+            Console.WriteLine($"Usage: {AppName} [{argumwents}| No Argument]");
 
             foreach (var argument in consoleArguments.GetCollection())
             {
                 Console.WriteLine($"{argument.Key}: {argument.Value.Description}");
             }
         }
-
     }
 }
